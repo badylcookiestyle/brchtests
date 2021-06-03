@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\storeQuestionRequest;
 use App\Models\Question;
 class QuestionController extends Controller
 {
@@ -17,30 +18,25 @@ class QuestionController extends Controller
     {
         //
     }
-    public function index($id){
-        return view("question.index")->with("id",$id);
+    public function create($id){
+        $testData=DB::table("questions")->where("test_id","=",$id)->get();
+        return view("question.create",["id"=>$id,"testData"=>$testData]);
     }
-    public function store(Request $request){
-        $data=$request->validate([
-            "testQuestion"=>"sometimes|min:2|max:64",
-            "flexRadioDefault"=>"sometimes",
-            "testAnswer1"=>"sometimes|min:2|max:64",
-            "testAnswer2"=>"sometimes|min:2|max:64",
-            "testAnswer3"=>"sometimes|min:2|max:64",
-            "testAnswer4"=>"sometimes|min:2|max:64"
-        ]);
+    public function store(storeQuestionRequest $request){
+
         DB::table("questions")->insert([
             "created_at"=>now(),
             "updated_at"=>now(),
-            "correct_answer"=>1,
+            "correct_answer"=>$request->correct_answer,
             "test_id"=>$request->testId,
             "question"=>$request->testQuestion,
-            "question_type"=>"brch",
+            "question_type"=>$request-> flexRadioDefault,
             "first_answer"=>$request->testAnswer1,
             "second_answer"=>$request->testAnswer2,
             "third_answer"=>$request->testAnswer3,
             "fourth_answer"=>$request->testAnswer4
         ]);
-       return $request;
+        $testData=DB::table("questions")->where("test_id","=",$request->testId)->get();
+        return response()->json(['success'=>'Contact form submitted successfully','testData'=>$testData] );
     }
 }

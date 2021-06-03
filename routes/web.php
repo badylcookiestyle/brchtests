@@ -52,4 +52,4 @@ Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'cr
 	->name('questionIndex')
 	->middleware("auth")->middleware("auth");
 
- Route::post('question',[App\Http\Controllers\QuestionController::class,'store'])->middleware("auth");
+ Route::post('question/{id}',[App\Http\Controllers\QuestionController::class,'store'])->middleware("auth");
