@@ -19,13 +19,13 @@
   <div class="form-group ">
     <label for="testTitle">{{__("test_title")}}</label>
     <input type="text" class="form-control" id="testTitle" name="testTitle" placeholder="Enter a title">
-    
+
   </div>
   <div class="form-group">
     <label for="descriptionTest">{{__('Description')}}</label>
     <textarea class="form-control" id="descriptionTest" name="descriptionTest"  rows="8" maxlength="500" style='resize:none'></textarea>
   </div>
-   
+
   <div class="form-group">
     <label for="testImg">{{__('Select your img if you want')}}</label>
     <input type="file" class="form-control-file" id="testImg"  name="testImg" accept=".png, .jpg, .jpeg">
@@ -35,7 +35,7 @@
 </div>
 
 </div>
-  <!--<script src="{{ asset('js/question.js') }}" defer></script> -->
-  
-	</section> 
+
+
+	</section>
 @endsection

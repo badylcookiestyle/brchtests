@@ -26,7 +26,6 @@ class storeQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-
                 "testQuestion"=>"sometimes|min:2|max:64",
                 "flexRadioDefault"=>"sometimes",
                 "correct_answer"=>"required|min:1|max:4|gt:0",
