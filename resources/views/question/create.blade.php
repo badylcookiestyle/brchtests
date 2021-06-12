@@ -15,35 +15,46 @@
                 <div class="modal-body">
                     <form method="post" id="upload-image-form" enctype="multipart/form-data">
                         @csrf
+                        @method("POST")
                         <div class="form-group">
                             <input type="file" name="file" class="form-control" id="image-input">
                             <span class="text-danger" id="image-input-error"></span>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Upload</button>
+
                         </div>
 
                     </form>
+                    <button  class="btn btn-success" id="change-image-button">Upload</button>
                 </div>
+
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{__("change_description")}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
+
+
+                        <h5 class="modal-title" id="exampleModalLabel">{{__("change_description")}}</h5>
+
+
+
                 </div>
                 <div class="modal-body">
-                    <form method="post" id="change-description-form" enctype="multipart/form-data">
+                    <form method="post" id="change-description-form">
                         @csrf
+                        @method('POST')
+                        <ul class="text-center">
+                            <li class="list-group-item list-group-item-action list-group-item-danger" id="errorDescription"></li>
+                        </ul>
                         <div class="form-group">
                             <textarea class="form-control" id="new-decription-textarea" ></textarea>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" id="change-description-button" class="btn btn-success">Change</button>
+
                         </div>
 
                     </form>
+                    <button  type="submit" id="change-description-button" class="btn btn-success">Change</button>
                 </div>
 
             </div>
@@ -72,7 +83,7 @@
         </div>
         <div id="description" class="text-center my-5">
             <h2>Description</h2>
-            <p>{{$description->description}}</p>
+            <p id="description-paragraph">{{$description->description}}</p>
         </div>
         <div id="currentQuestions">
             @forelse ($testData as $test)

@@ -58,3 +58,5 @@ Route::post('question/store',[App\Http\Controllers\QuestionController::class,'st
 Route::get('question/delete/{id}',[App\Http\Controllers\QuestionController::class,'destroy'])->middleware("auth")->name("questionDelete");
 //*** img route
 Route::post('question/changeImg',[App\Http\Controllers\TestController::class,'changeImg'])->middleware("auth");
+//*** description route
+Route::post('question/changeDescription',[App\Http\Controllers\DescriptionController::class,'change'])->middleware("auth");

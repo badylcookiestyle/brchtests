@@ -101,35 +101,28 @@ class TestController extends Controller
     public function changeImg(Request $request)
     {
 
-      /*  $path = storage_path('app/public/images/' . $request->img);
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-        if (!File::exists($path)) {
 
-            abort(404);
+        if ($request->file('file')) {
+            $uploadedFile = $request->file('file');
+            $imagePath = $request->file('file');
+            $imageName = time().$imagePath->getClientOriginalName();
+            Storage::disk('local')->putFileAs('public/'."images/", $uploadedFile, $imageName);
+            $oldFile=Test::where("id","=",$request->testId)->select("file_path")->first();
+            Storage::disk('local')->delete('public/images/'.$oldFile->file_path);
+            Test::where("id","=",$request->testId)->update(["file_path"=>$imageName]);
 
         }
 
-        $file = File::get($path);
-        $type = File::mimeType($path);
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
-        Test::where("id","=",$request->id)->update(['file_path'=>$path]);
-        $oldImg=Test::select("file_path")->where("id","=",$request->id);
-        Storage::disklo)->delete($oldImg);
 
-        return $request; */
-        if ($request->file('img') != "") {
-            $uploadedFile = $request->file('img');
-            $filename = time() . $uploadedFile->getClientOriginalName();
-            $test->file_path = $filename;
-            Storage::disk('local')->putFileAs('public/' . "images/", $uploadedFile, $filename);
-            Test::where("id","=",$request->id)->update(['file_path'=>$filename]);
-            $oldImg=Test::select("file_path")->where("id","=",$request->id);
-            Storage::disk('local')->delete($oldImg);
-        }
-        return response()->json(['result' => json_encode($request)]);
 
+        return response()->json('Image uploaded successfully'.$imageName.'=='.$oldFile);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -142,8 +135,11 @@ class TestController extends Controller
         $test = Test::find($id);
         //anti spammer if
         if ($test != null) {
+            $oldFile=Test::where("id","=",$id)->select("file_path")->first();
+            Storage::disk('local')->delete('public/images/'.$oldFile->file_path);
             $test->delete();
         }
+
         return redirect("/home");
     }
 }

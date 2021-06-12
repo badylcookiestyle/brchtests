@@ -12,6 +12,7 @@ function reset() {
     $(".testAnswer2Edit").hide()
     $(".testAnswer3Edit").hide()
     $(".testAnswer4Edit").hide()
+    $("#errorDescription").hide()
 }
 
 reset()
@@ -24,6 +25,7 @@ function resetErrors() {
     $('#errorTestType').hide()
     $('#errorQuestion').hide()
     $('#correctAnswer').hide()
+    $("#errorDescription").hide()
 }
 
 $("#flexRadioDefault1").click(function () {
@@ -53,9 +55,7 @@ $("#flexRadioDefault2Edit").click(function () {
     $(".testAnswer3Edit").show()
     $(".testAnswer4Edit").show()
 });
-$("#change-description-button").click(function () {
 
-});
 jQuery(document).ready(function ($) {
     resetErrors()
     // CREATE
@@ -281,34 +281,72 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-});
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+    $("#change-description-button").click(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var formData={
+            descriptionTest: $("#new-decription-textarea").val(),
+            testId:currentId
+        }
+        $.ajax({
+            type: "POST",
+            url: "changeDescription",
+            data:formData,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
 
-$('#upload-image-form').submit(function(e) {
-    e.preventDefault();
-    let formData = new FormData(this);
-    $('#image-input-error').text('');
+                var newDesc=$("#new-decription-textarea").val()
+                $("#description-paragraph").empty()
+                $("#description-paragraph").text(newDesc)
 
-    $.ajax({
-        type:'POST',
-        url: 'changeImg',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: (response) => {
-            console.log(response)
-            if (response) {
-                this.reset();
+
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+
+            },
+            error: function (data) {
+                console.log(data);
+                $('#errorDescription'.toString()).text(data.responseJSON.errors.descriptionTest)
+                $('#errorDescription'.toString()).toggle()
+            }
+        });
+    });
+    $("#change-image-button").click(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        var fd = new FormData();
+        var files = $('#image-input')[0].files[0];
+        fd.append('file', files);
+        fd.append('testId',currentId);
+
+        //formData.append('file',$("#image-input").val())
+        $.ajax({
+            type: "POST",
+            url: "changeImg",
+            data:fd,
+
+            contentType: false,
+            processData: false,
+
+            success: function (data) {
+                console.log(data);
+
+
+
+            },
+            error: function (data) {
+                console.log(data);
 
             }
-        },
-        error: function(response){
-            console.log(response);
-            $('#image-input-error').text(response.responseJSON.errors.file);
-        }
+        });
     });
 });
+
