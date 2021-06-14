@@ -26,15 +26,13 @@
                         </div>
 
                     </form>
-                    <button  class="btn btn-success" id="change-image-button">Upload</button>
+                    <button class="btn btn-success" id="change-image-button">Upload</button>
                 </div>
 
                 <div class="modal-header">
 
 
-
-                        <h5 class="modal-title" id="exampleModalLabel">{{__("change_description")}}</h5>
-
+                    <h5 class="modal-title" id="exampleModalLabel">{{__("change_description")}}</h5>
 
 
                 </div>
@@ -43,10 +41,11 @@
                         @csrf
                         @method('POST')
                         <ul class="text-center">
-                            <li class="list-group-item list-group-item-action list-group-item-danger" id="errorDescription"></li>
+                            <li class="list-group-item list-group-item-action list-group-item-danger"
+                                id="errorDescription"></li>
                         </ul>
                         <div class="form-group">
-                            <textarea class="form-control" id="new-decription-textarea" ></textarea>
+                            <textarea class="form-control" id="new-decription-textarea"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -54,7 +53,7 @@
                         </div>
 
                     </form>
-                    <button  type="submit" id="change-description-button" class="btn btn-success">Change</button>
+                    <button type="submit" id="change-description-button" class="btn btn-success">Change</button>
                 </div>
 
             </div>
@@ -90,16 +89,32 @@
                 <div class='border-top'>
                     <a href="{{ route('questionDelete',$test->id) }}" class="btn btn-danger mt-2 float-right"
                        data-id="{{ $test->id }}">Delete</a>
-                <!--  <a href="#" onclick='openEdit'class="btn btn-info mt-2 mr-2 float-right"
-                       data-id="{{ $test->id }}">Edit</a> -->
-                    <button id="" val="{{$test->question}}" class="btn btn-info mt-2 mr-2 float-right open-edit" data-id="{{ $test->id }}">Edit
+
+                    <button id="" val="{{$test->question}}" class="btn btn-info mt-2 mr-2 float-right open-edit"
+                            data-id="{{ $test->id }}">Edit
                     </button>
                     <h4 class="text-dark font-weight-bold">question {{$test->question}}</h4>
-                    <h5 class='ml-2 text-muted'>answer 1: {{$test->first_answer}}</h5>
-                    <h5 class='ml-2 text-muted'>answer 2: {{$test->second_answer}}</h5>
+                    @if($test->correct_answer==1)
+                        <h5 class='ml-2 text-success'>answer 1: {{$test->first_answer}}</h5>
+                    @else
+                        <h5 class='ml-2 text-muted'>answer 1: {{$test->first_answer}}</h5>
+                    @endif
+                    @if($test->correct_answer==2)
+                        <h5 class='ml-2 text-success'>answer 2: {{$test->second_answer}}</h5>
+                    @else
+                        <h5 class='ml-2 text-muted'>answer 2: {{$test->second_answer}}</h5>
+                    @endif
                     @if($test->question_type=="4_questions")
-                        <h5 class='ml-2 text-muted'>answer 3: {{$test->third_answer}}</h5>
-                        <h5 class='ml-2 text-muted'>answer 4: {{$test->fourth_answer}}</h5>
+                        @if($test->correct_answer==3)
+                            <h5 class='ml-2 text-success'>answer 3: {{$test->third_answer}}</h5>
+                        @else
+                            <h5 class='ml-2 text-muted'>answer 3: {{$test->third_answer}}</h5>
+                        @endif
+                        @if($test->correct_answer==4)
+                            <h5 class='ml-2 text-success'>answer 4: {{$test->fourth_answer}}</h5>
+                        @else
+                            <h5 class='ml-2 text-muted'>answer 4: {{$test->fourth_answer}}</h5>
+                        @endif
                     @endif
 
                 </div>
@@ -199,7 +214,8 @@
                     </label>
                 </div>
                 <div class="form-group ">
-                    <input class="form-check-input testAnswer1Edit" type="radio" name="correctAnswerEdit" id="correctAnswer1Edit">
+                    <input class="form-check-input testAnswer1Edit" type="radio" name="correctAnswerEdit"
+                           id="correctAnswer1Edit">
                     <label for="testAnswer1Edit" class="testAnswer1Edit">{{__("test_answer_1")}}</label>
 
                     <input type="text" class="form-control testAnswer1Edit" id="testAnswer1Edit" name="testAnswer1Edit"
@@ -207,26 +223,29 @@
 
                 </div>
                 <div class="form-group ">
-                    <input class="form-check-input testAnswer2Edit" type="radio" name="correctAnswerEdit" id="correctAnswer2Edit">
+                    <input class="form-check-input testAnswer2Edit" type="radio" name="correctAnswerEdit"
+                           id="correctAnswer2Edit">
                     <label for="testAnswer2Edit" class="testAnswer2Edit">{{__("test_answer_2")}}</label>
                     <input type="text" class="form-control testAnswer2Edit" id="testAnswer2Edit" name="testAnswer2Edit"
                            placeholder="Enter a Answer">
                 </div>
                 <div class="form-group ">
-                    <input class="form-check-input testAnswer3Edit" type="radio" name="correctAnswerEdit" id="correctAnswer3Edit">
+                    <input class="form-check-input testAnswer3Edit" type="radio" name="correctAnswerEdit"
+                           id="correctAnswer3Edit">
                     <label for="testAnswer3Edit" class="testAnswer3Edit">{{__("test_answer_3")}}</label>
                     <input type="text" class="form-control testAnswer3Edit" id="testAnswer3Edit" name="testAnswer3Edit"
                            placeholder="Enter a Answer">
                 </div>
                 <div class="form-group ">
-                    <input class="form-check-input testAnswer4Edit" type="radio" name="correctAnswerEdit" id="correctAnswer4Edit">
+                    <input class="form-check-input testAnswer4Edit" type="radio" name="correctAnswerEdit"
+                           id="correctAnswer4Edit">
                     <label for="testAnswer4Edit" class="testAnswer4Edit">{{__("test_answer_4")}}</label>
 
                     <input type="text" class="form-control testAnswer4Edit" id="testAnswer4Edit" name="testAnswer4Edit"
                            placeholder="Enter a Answer">
                 </div>
                 <a href="{{ route('home') }}" class="btn-lg btn-info mt-2 float-right">{{__('back')}}</a>
-                <a  id="updateButton" class="btn-lg btn-success mt-2 ">{{__('edit')}}</a>
+                <a id="updateButton" class="btn-lg btn-success mt-2 ">{{__('edit')}}</a>
             </form>
         </div>
     </div>

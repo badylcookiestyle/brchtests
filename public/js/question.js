@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
         console.log("brch")
         console.log($(this).attr("data-id"))
         $("#edit-question").show();
-        var variable=$(this).val();
+        var variable = $(this).val();
         $("#testQuestionEdit").val(variable)
         $("#editId").val($(this).attr("data-id"));
     })
@@ -109,7 +109,7 @@ jQuery(document).ready(function ($) {
         }
         var formData = {
             testIdEdit: currentId,
-            questionIdEdit:jQuery('#editId').val(),
+            questionIdEdit: jQuery('#editId').val(),
             testQuestionEdit: jQuery('#testQuestionEdit').val(),
             flexRadioDefaultEdit: type,
             correct_answerEdit: choosenAnswer,
@@ -135,7 +135,7 @@ jQuery(document).ready(function ($) {
                 for (i = 0; i < question.length; i++) {
                     $('#currentQuestions').append("<div class='border-top'>" +
                         "<a href='delete/" + question[i].id + "'class='btn text-light btn-danger float-right mt-2'  >Delete</a>" +
-                        "<button  val='"+question[i].question+"' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='"+question[i].id+"'>Edit </button>"+
+                        "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>" +
 
                         "<h4 class='font-weight-bold'>question " + question[i].question + "</h4>" +
                         " <h5 class='ml-2 text-muted'>answer 1: " + question[i].first_answer + "</h5>" +
@@ -178,7 +178,7 @@ jQuery(document).ready(function ($) {
             }
         });
     })
-    //**************************************************************************** ADD
+    //**************************************************************************** ADD NEW QUESTION
     $("#btn-add").click(function (e) {
         resetErrors()
         $.ajaxSetup({
@@ -238,18 +238,31 @@ jQuery(document).ready(function ($) {
                 for (i = 0; i < question.length; i++) {
                     $('#currentQuestions').append("<div class='border-top'>" +
                         "<a href='delete/" + question[i].id + "'class='btn text-light btn-danger float-right mt-2'  >Delete</a>" +
-                        "<button  val='"+question[i].question+"' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='"+question[i].id+"'>Edit </button>"+
-                      //  "<button val='"+question[i].question+"' id='' class='btn btn-info mt-2 mr-2 float-right open-edit'data-id='"+question[i].id+"'>Edit </button>" +
+                        "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>" +
+                        //  "<button val='"+question[i].question+"' id='' class='btn btn-info mt-2 mr-2 float-right open-edit'data-id='"+question[i].id+"'>Edit </button>" +
                         "<h4 class='font-weight-bold'>question " + question[i].question + "</h4>" +
-                        " <h5 class='ml-2 text-muted'>answer 1: " + question[i].first_answer + "</h5>" +
-                        " <h5 class='ml-2 text-muted'>answer 2: " + question[i].second_answer + "</h5>"
+                        " <h5 class='ml-2 text-muted' id='q1'>answer 1: " + question[i].first_answer + "</h5>" +
+                        " <h5 class='ml-2 text-muted' id='q2'>answer 2: " + question[i].second_answer + "</h5>"
                     )
                     if (question[i].question_type == "4_questions") {
                         $('#currentQuestions').append(
-                            " <h5 class='ml-2 text-muted'>answer 3: " + question[i].third_answer + "</h5>" +
-                            " <h5 class='ml-2 text-muted'>answer 4: " + question[i].fourth_answer + "</h5>")
+
+                            " <h5 class='ml-2 text-muted' id='q3' >answer 3: " + question[i].third_answer + "</h5>" +
+                            " <h5 class='ml-2 text-muted' id='q4'>answer 4: " + question[i].fourth_answer + "</h5>")
                     }
                     $('#currentQuestions').append("</div>")
+                    if(question[i].first_answer==question[i].correct_answer){
+                        $("#q"+i).removeClass("text-muted")
+                        $("#q"+i).addClass("text-success")}
+                    if(question[i].second_answer==question[i].correct_answer){
+                        $("#q"+i).removeClass("text-muted")
+                        $("#q"+i).addClass("text-success")}
+                    if(question[i].third_answer==question[i].correct_answer){
+                        $("#q"+i).removeClass("text-muted")
+                        $("#q"+i).addClass("text-success")}
+                    if(question[i].fourth_answer==question[i].correct_answer){
+                        $("#q"+i).removeClass("text-muted")
+                        $("#q"+i).addClass("text-success")}
                 }
             },
             error: function (data) {
@@ -281,25 +294,26 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+    //****************************************** change description
     $("#change-description-button").click(function () {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
             }
         });
-        var formData={
+        var formData = {
             descriptionTest: $("#new-decription-textarea").val(),
-            testId:currentId
+            testId: currentId
         }
         $.ajax({
             type: "POST",
             url: "changeDescription",
-            data:formData,
+            data: formData,
             dataType: 'json',
             success: function (data) {
                 console.log(data);
 
-                var newDesc=$("#new-decription-textarea").val()
+                var newDesc = $("#new-decription-textarea").val()
                 $("#description-paragraph").empty()
                 $("#description-paragraph").text(newDesc)
 
@@ -315,6 +329,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+    //****************************************************** Image upload
     $("#change-image-button").click(function () {
         $.ajaxSetup({
             headers: {
@@ -325,20 +340,19 @@ jQuery(document).ready(function ($) {
         var fd = new FormData();
         var files = $('#image-input')[0].files[0];
         fd.append('file', files);
-        fd.append('testId',currentId);
+        fd.append('testId', currentId);
 
         //formData.append('file',$("#image-input").val())
         $.ajax({
             type: "POST",
             url: "changeImg",
-            data:fd,
+            data: fd,
 
             contentType: false,
             processData: false,
 
             success: function (data) {
                 console.log(data);
-
 
 
             },

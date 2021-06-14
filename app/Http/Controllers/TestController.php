@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\createTestRequest;
@@ -18,9 +19,11 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return Test::index();
+        $questions=Question::where("test_id","=",$id)->get();
+        $testData=Test::where("id","=",$id)->select("description","file_path","name")->first();
+        return  view("test.index",['testData'=>$testData,'questions'=>$questions]);
     }
 
     /**
@@ -95,33 +98,45 @@ class TestController extends Controller
     {
         //
     }
-
-
+    public function checkAnswers(Request $request){
+        $score=0;
+        $invalidAnswers=array();
+        $answers=$request->answers;
+        $correctAnswers=Question::where("test_id","=",$request->testId)->select("correct_answer","question")->get();
+        Test::where("id","=",$request->testId)->increment("amount_of_solutions");
+        $correctAnswers->toArray();
+        for($i=0;$i<count($request->answers);$i++){
+            if($answers[$i]==$correctAnswers[$i]->correct_answer){
+                $score++;
+            }
+            else{
+                array_push($invalidAnswers,$correctAnswers[$i]->question);
+            }
+        }
+        return array('score'=>$score,'invalidAnswers'=>$invalidAnswers);
+    }
 
     public function changeImg(Request $request)
     {
 
         $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'file' => "required|image|mimes:jpg,png,jpeg|max:4048|dimensions:max_width=100,max_height=200|dimensions:ratio=3/2",
         ]);
 
 
         if ($request->file('file')) {
             $uploadedFile = $request->file('file');
             $imagePath = $request->file('file');
-            $imageName = time().$imagePath->getClientOriginalName();
-            Storage::disk('local')->putFileAs('public/'."images/", $uploadedFile, $imageName);
-            $oldFile=Test::where("id","=",$request->testId)->select("file_path")->first();
-            Storage::disk('local')->delete('public/images/'.$oldFile->file_path);
-            Test::where("id","=",$request->testId)->update(["file_path"=>$imageName]);
+            $imageName = time() . $imagePath->getClientOriginalName();
+            Storage::disk('local')->putFileAs('public/' . "images/", $uploadedFile, $imageName);
+            $oldFile = Test::where("id", "=", $request->testId)->select("file_path")->first();
+            Storage::disk('local')->delete('public/images/' . $oldFile->file_path);
+            Test::where("id", "=", $request->testId)->update(["file_path" => $imageName]);
 
         }
 
-
-
-        return response()->json('Image uploaded successfully'.$imageName.'=='.$oldFile);
+        return response()->json('Image uploaded successfull');
     }
-
 
 
     /**
@@ -135,8 +150,8 @@ class TestController extends Controller
         $test = Test::find($id);
         //anti spammer if
         if ($test != null) {
-            $oldFile=Test::where("id","=",$id)->select("file_path")->first();
-            Storage::disk('local')->delete('public/images/'.$oldFile->file_path);
+            $oldFile = Test::where("id", "=", $id)->select("file_path")->first();
+            Storage::disk('local')->delete('public/images/' . $oldFile->file_path);
             $test->delete();
         }
 

@@ -28,38 +28,40 @@ class QuestionController extends Controller
 
         return view("question.create", ["id" => $id, "testData" => $testData, "description" => $img]);
     }
-    public function update(updateQuestionRequest $request){
-        $question_type=$request->flexRadioDefaultEdit;
-        if($question_type=="4_questions"){
-        DB::table("questions")->where("id","=",$request->questionIdEdit)->update([
-            "updated_at"=>now(),
-            "correct_answer"=>$request->correct_answerEdit,
-            "question"=>$request->testQuestionEdit,
-            "question_type"=>$request->flexRadioDefaultEdit,
-            "first_answer"=>$request->testAnswer1Edit,
-            "second_answer"=>$request->testAnswer2Edit,
-            "third_answer"=>$request->testAnswer3Edit,
-            "fourth_answer"=>$request->testAnswer4Edit,
-        ]);
 
-        }
-        elseif ($question_type=="yes_or_no"){
-            DB::table("questions")->where("id","=",$request->questionIdEdit)->update([
-                "updated_at"=>now(),
-                "correct_answer"=>$request->correct_answerEdit,
-                "question"=>$request->testQuestionEdit,
-                "question_type"=>$request->flexRadioDefaultEdit,
-                "first_answer"=>$request->testAnswer1Edit,
-                "second_answer"=>$request->testAnswer2Edit,
-                "third_answer"=>"--",
-                "fourth_answer"=>"--",
+    public function update(updateQuestionRequest $request)
+    {
+        $question_type = $request->flexRadioDefaultEdit;
+        if ($question_type == "4_questions") {
+            DB::table("questions")->where("id", "=", $request->questionIdEdit)->update([
+                "updated_at" => now(),
+                "correct_answer" => $request->correct_answerEdit,
+                "question" => $request->testQuestionEdit,
+                "question_type" => $request->flexRadioDefaultEdit,
+                "first_answer" => $request->testAnswer1Edit,
+                "second_answer" => $request->testAnswer2Edit,
+                "third_answer" => $request->testAnswer3Edit,
+                "fourth_answer" => $request->testAnswer4Edit,
+            ]);
+
+        } elseif ($question_type == "yes_or_no") {
+            DB::table("questions")->where("id", "=", $request->questionIdEdit)->update([
+                "updated_at" => now(),
+                "correct_answer" => $request->correct_answerEdit,
+                "question" => $request->testQuestionEdit,
+                "question_type" => $request->flexRadioDefaultEdit,
+                "first_answer" => $request->testAnswer1Edit,
+                "second_answer" => $request->testAnswer2Edit,
+                "third_answer" => "--",
+                "fourth_answer" => "--",
             ]);
 
         }
 
-       $testData = DB::table("questions")->where("test_id", "=", $request->testIdEdit)->get();
+        $testData = DB::table("questions")->where("test_id", "=", $request->testIdEdit)->get();
         return response()->json(['success' => 'Contact form submitted successfully', 'testData' => $testData]);
     }
+
     public function store(storeQuestionRequest $request)
     {
 
