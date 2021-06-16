@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <section class="container">
-
+        @if(Auth::check())
         <form class="float-right" action="{{route('home')}}">
             @csrf
             @method('get')
@@ -17,6 +17,7 @@
                 {{__('edit')}}
             </button>
         </form>
+            @endif
         @endif
         <div id="score-section">
             <button class="btn btn-dark float-right" id="again">solve this test again</button>

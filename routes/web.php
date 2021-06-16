@@ -31,8 +31,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 	->middleware("auth");
 
 Route::get('/test/{id}', [App\Http\Controllers\TestController::class, 'index'])
-	->name('testIndex')
-	->middleware("auth");
+	->name('testIndex');
 
  Route::get('/test', [App\Http\Controllers\TestController::class, 'create'])
  	->name('testCreate')
@@ -49,6 +48,7 @@ Route::get('/test/edit/{id}',[App\Http\Controllers\TestController::class,'edit']
 Route::post('/test', [App\Http\Controllers\TestController::class, 'store'])
 	->name('testStore')
 	->middleware("auth");
+
 Route::post('test/checkAnswers',[App\Http\Controllers\TestController::class,'checkAnswers'])->name('checkAnswers')->middleware();
 
 
@@ -63,3 +63,5 @@ Route::get('question/delete/{id}',[App\Http\Controllers\QuestionController::clas
 Route::post('question/changeImg',[App\Http\Controllers\TestController::class,'changeImg'])->middleware("auth");
 //*** description route
 Route::post('question/changeDescription',[App\Http\Controllers\DescriptionController::class,'change'])->middleware("auth");
+Route::get('/notWorking', [App\Http\Controllers\TestController::class, 'notWorking'])
+    ->name('notWorking');

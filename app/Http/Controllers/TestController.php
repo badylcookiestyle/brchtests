@@ -39,6 +39,7 @@ class TestController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(createTestRequest $request)
     {
         return Test::store($request);
@@ -54,7 +55,9 @@ class TestController extends Controller
     {
         //
     }
-
+    public function notWorking(){
+        return view("notWorking");
+    }
     /**
      * Show the form for editing the specified resource.
      *

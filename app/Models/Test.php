@@ -26,9 +26,12 @@ class Test extends Model
 
     public static function index($id)
     {
-        $userId = Auth::user()->id;
+        $userId=0;
+        if(Auth::check()){
+        $userId = Auth::user()->id;}
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
+
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
                 return view("test.index", ['testData' => $testData, 'questions' => $questions, "canEdit" => true]);
@@ -36,7 +39,11 @@ class Test extends Model
                 return view("test.index", ['testData' => $testData, 'questions' => $questions, "canEdit" => false]);
             }
         } else {
-            return redirect()->route("questionIndex", ['id' => $id]);
+            if(Auth::check()){
+            return redirect()->route("questionIndex", ['id' => $id]);}
+            else{
+                return  redirect()->route("notWorking");
+            }
         }
     }
 
