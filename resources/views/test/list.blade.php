@@ -32,7 +32,7 @@
                     @csrf
                     @method('get')
                     <button type="submit"  class="btn btn-success float-right mt-1 ml-2 ">
-                        {{__('edit')}}
+                        {{__('use')}}
                     </button>
                 </form>
 

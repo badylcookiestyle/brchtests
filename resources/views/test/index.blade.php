@@ -1,6 +1,23 @@
 @extends('layouts.app')
 @section('content')
     <section class="container">
+
+        <form class="float-right" action="{{route('home')}}">
+            @csrf
+            @method('get')
+            <button type="submit"  class="btn btn-dark float-right mt-1 ml-2 ">
+                {{__('home')}}
+            </button>
+        </form>
+        @if($canEdit==true)
+        <form class="float-right" action="{{route('questionIndex',["id"=>$questions[0]->test_id])}}">
+            @csrf
+            @method('get')
+            <button type="submit"  class="btn btn-info float-right mt-1 ml-2 ">
+                {{__('edit')}}
+            </button>
+        </form>
+        @endif
         <div id="score-section">
             <button class="btn btn-dark float-right" id="again">solve this test again</button>
             <div id="score"></div>

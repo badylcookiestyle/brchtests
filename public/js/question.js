@@ -13,6 +13,7 @@ function reset() {
     $(".testAnswer3Edit").hide()
     $(".testAnswer4Edit").hide()
     $("#errorDescription").hide()
+    $("#errorImage").hide()
 }
 
 reset()
@@ -358,7 +359,8 @@ jQuery(document).ready(function ($) {
             },
             error: function (data) {
                 console.log(data);
-
+                $('#errorImage'.toString()).text(data.responseJSON.errors.file)
+                $('#errorImage'.toString()).toggle()
             }
         });
     });

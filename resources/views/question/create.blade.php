@@ -13,9 +13,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <ul class="text-center">
+                        <li class="list-group-item list-group-item-action list-group-item-danger"
+                            id="errorImage"></li>
+                    </ul>
                     <form method="post" id="upload-image-form" enctype="multipart/form-data">
                         @csrf
                         @method("POST")
+
                         <div class="form-group">
                             <input type="file" name="file" class="form-control" id="image-input">
                             <span class="text-danger" id="image-input-error"></span>
@@ -60,6 +65,13 @@
         </div>
     </div>
     <div class="container">
+        <form class="float-right" action="{{route("testIndex",['id'=>$id])}}">
+            @csrf
+            @method('get')
+            <button type="submit"  class="btn btn-success float-right mt-1 ml-2 ">
+                {{__('use')}}
+            </button>
+        </form>
         <div class="text-center">
             <button class="btn btn-info  " data-toggle="modal" data-target="#changeImg">
                 <input type="hidden" id="ttoken" name="_token" value="{{ csrf_token() }}"/>
@@ -255,8 +267,7 @@
         var currentId ={{$id}}
     </script>
     <script src="{{ asset('js/question.js') }}">
-        var ttoken = "{{csrf_token()}}"
-        var currentId ={{$id}}
+
     </script>
 @endsection
 

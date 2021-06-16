@@ -15,10 +15,13 @@ use App\Http\Controllers\StorageFileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/',[App\Http\Controllers\welcomeController::class,'index'] );
+Route::get('/contact', function () {
+    return view('contact');
+})->name("contact");
+Route::get('/about', function () {
+    return view('about');
+})->name("about");
 Auth::routes();
 
 
