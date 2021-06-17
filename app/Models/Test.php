@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StorageFileController;
+use App\Models\Comment;
 
 class Test extends Model
 {
@@ -19,7 +20,7 @@ class Test extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->hasMany(Comment::class);
     }
 
     public $timestamps = true;
@@ -31,12 +32,12 @@ class Test extends Model
         $userId = Auth::user()->id;}
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
-
+        $comments=Comment::where("test_id",'=',$id)->orderBy("created_at","desc")->get();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, "canEdit" => true]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => true]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, "canEdit" => false]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => false]);
             }
         } else {
             if(Auth::check()){

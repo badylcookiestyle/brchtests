@@ -24,7 +24,9 @@ Route::get('/about', function () {
 })->name("about");
 Auth::routes();
 
-
+Route::get('/settings', function () {
+    return view('settings');
+})->name("settings")->middleware("auth");
 //test routes
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 	->name('home')
@@ -55,7 +57,9 @@ Route::post('test/checkAnswers',[App\Http\Controllers\TestController::class,'che
 Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'create'])
 	->name('questionIndex')
 	->middleware("auth");
-
+Route::post('test/addComment',[App\Http\Controllers\CommentController::class,'store'])->name("addComment")->middleware("auth");
+Route::post('test/editComment',[App\Http\Controllers\CommentController::class,'edit'])->name("editComment")->middleware("auth");
+Route::delete('test/comment/delete/{id}',[App\Http\Controllers\CommentController::class,'destroy'])->middleware("auth")->name("commentDelete");
 Route::post('question/update',[App\Http\Controllers\QuestionController::class,'update'])->name('questionEdit')->middleware("auth");
 Route::post('question/store',[App\Http\Controllers\QuestionController::class,'store'])->middleware("auth");
 Route::get('question/delete/{id}',[App\Http\Controllers\QuestionController::class,'destroy'])->middleware("auth")->name("questionDelete");
