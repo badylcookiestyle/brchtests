@@ -27,6 +27,14 @@ Auth::routes();
 Route::get('/settings', function () {
     return view('settings');
 })->name("settings")->middleware("auth");
+Route::get('/settings/changePassword', function () {
+    return view('settingsPanels.index');
+})->name("changePasswordPanel")->middleware("auth");
+Route::get('/settings/deleteAccount', function () {
+    return view('settingsPanels.deleteAccount');
+})->name("deleteAccountPanel")->middleware("auth");
+Route::post('/settings/changePasswordRequest',[App\Http\Controllers\ChangePasswordController::class,"update"])->name("changePasswordRequest")->middleware("auth");
+Route::post("settings/deleteAccount",[App\Http\Controllers\ChangePasswordController::class,'deleteAccount'])->name('deleteAccount')->middleware("auth");
 //test routes
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 	->name('home')
