@@ -1,52 +1,60 @@
 var currentComment=0;
 $("#errorComment").hide()
 $("#editComment").hide();
+function getSubComments(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var formData = {
+        commentId:id,
+    }
+    $.ajax({
+        type: "POST",
+        url: "getSubComments",
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+
+            console.log(data.subComments);
+            $("body").find(".sc").remove()
+            for(i=0;i<data.subComments.length;i++){
+                //$(".sc"+data.subComments[i].comment_id).remove()
+                // $("#c"+data.subComments[i].comm).find(".sc").remove()
+                $("#c"+data.subComments[i].comment_id).append("<div class='border-bottom ml-3 sc'><h3>"+data.subComments[i].contents+"</h3><h6>"+data.subComments[i].created_at+"</h6></div>")
+            }
+
+
+        },
+        error: function (data) {
+
+            console.log(data);
+
+        }
+    });
+}
 $(document).ready(function () {
     //reply
 
     $("body").on("click", "#replyButton", function (e) {
         var id = $(this).data("id");
         console.log("kek"+id)
-        $('#replyForm').remove()
-
+        $('.replyForm').remove()
+        $("body").find(".sc").remove()
         $("#c"+id).append(" <div class='form-group d-flex replyForm'> <label for='subCommentArea' class='m-2'>reply</label> <textarea class='form-control m-2' id='subCommentArea' rows='3'></textarea> <button id='replySendButton' class='btn btn-outline-success' data-id='"+id+"'>send</button>")
     })
+    //get subcomments
     $("body").on("click", "#expandReplies", function (e) {
-
+        $('.replyForm').remove()
         var id=$(this).data("id")
         console.log(id)
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        var formData = {
-            commentId:id,
-        }
-        $.ajax({
-            type: "POST",
-            url: "getSubComments",
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-
-                console.log(data.subComments);
-                for(i=0;i<3;i++){
-                    $("#c"+data.subComments[i].comment_id).append("<div class='border-bottom ml-3'><h3>"+data.subComments[i].contents+"</h3><h6>"+data.subComments[i].created_at+"</h6></div>")
-                }
-
-
-            },
-            error: function (data) {
-
-                console.log(data);
-
-            }
-        });
-        // $('#replyForm').remove()
+       getSubComments(id)
+         $('.replyForm').remove()
     })
     //send subcomment
     $("body").on("click", "#replySendButton", function (e) {
+        $("body").find(".sc").remove()
         var content=$("#subCommentArea").val()
         var id=$(this).data("id")
         console.log("id"+id+" content "+content)
@@ -69,10 +77,11 @@ $(document).ready(function () {
             success: function (data) {
                 //$("#errorComment").hide()
                 console.log(data);
-                //$("#commentArea").val("")
-                //$("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;'id='editCommentButton' value='"+data.contents+"' data-id='"+data.commentId+"'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button></div>")
-                $('#replyForm').remove()
 
+                $('.replyForm').remove()
+                console.log(data.commentId)
+
+                getSubComments(id)
             },
             error: function (data) {
                 //console.log(data.responseJSON.message);
@@ -80,10 +89,12 @@ $(document).ready(function () {
 
             }
         });
-       // $('#replyForm').remove()
+        $('.replyForm').remove()
     })
     //  $(body)("#deleteComment").click(function () {
+
     $("body").on("click", "#deleteComment", function (e) {
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -99,11 +110,14 @@ $(document).ready(function () {
                     id: id
                 },
                 success: function (data) {
+                    $("body").find(".sc").remove()
                     $("#c" + id).remove();
                 }
             });
+
     })
     $("body").on("click", "#editCommentButton", function (e) {
+
         $("#editComment").show();
         $("#addComment").hide();
         $("#editCommentArea").val($(this).val())

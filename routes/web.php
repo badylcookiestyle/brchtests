@@ -72,6 +72,7 @@ Route::delete('test/comment/delete/{id}',[App\Http\Controllers\CommentController
 //*** subcomment
 Route::post('test/getSubComments',[App\Http\Controllers\SubCommentController::class,'get'])->name("getSubComments");
 Route::post('test/addSubComment',[App\Http\Controllers\SubCommentController::class,'store'])->name("addSubComment")->middleware("auth");
+Route::post('test/editSubComment',[App\Http\Controllers\CommentController::class,'edit'])->name("editSubComment")->middleware("auth");
 
 //*** question
 Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'create'])
