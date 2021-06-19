@@ -2,6 +2,7 @@
 @section('content')
     @php
         use App\Models\Comment;
+        use App\Models\SubComment;
     @endphp
     <section class="container">
         @if(Auth::check())
@@ -132,137 +133,29 @@
                                     id="deleteComment" data-id="{{ $comment->id }}">
                                 Delete
                             </button>
-                        @endif
+
+                            @endif
+                            <button class="btn btn-sm btn-outline-dark py-0" style="font-size: 0.8em;"
+                                    id="replyButton" value="{{$comment->contents}}" data-id="{{ $comment->id }}">
+                                Reply
+                            </button>
+                            <br>
+
                     @endif
+                    <button id="expandReplies" class="btn btn-toolbar" data-id="{{ $comment->id }}">replies</button>
                 </div>
             @endforeach
         </div>
     </section>
     </div>
     </section>
-    <script>
-        var currentComment=0;
-        $("#errorComment").hide()
-        $("#editComment").hide();
-        $(document).ready(function () {
 
-            console.log("reed")
-            //  $(body)("#deleteComment").click(function () {
-            $("body").on("click", "#deleteComment", function (e) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var id = $(this).data("id");
-                var url = "comment/delete/" + id;
-                $.ajax(
-                    {
-                        url: url,
-                        type: 'delete',
-                        data: {
-                            id: id
-                        },
-                        success: function (data) {
-                            $("#c" + id).remove();
-                        }
-                    });
-            })
-            $("body").on("click", "#editCommentButton", function (e) {
-                $("#editComment").show();
-                $("#addComment").hide();
-                $("#editCommentArea").val($(this).val())
-                currentComment=$(this).data("id")
-            })
-            $("#commentBack").click(function(){
-                $("#editComment").hide();
-                $("#addComment").show();
-            })
-            $("#sendForm").click(function () {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var formData = {
-                    commentArea: $("#commentArea").val(),
-                    testId: {{$testId}}
-
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "addComment",
-                    data: formData,
-                    dataType: 'json',
-                    success: function (data) {
-                        $("#errorComment").hide()
-                        console.log(data);
-                        $("#commentArea").val("")
-                        $("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;'id='editCommentButton' value='"+data.contents+"' data-id='"+data.commentId+"'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button></div>")
-
-
-                    },
-                    error: function (data) {
-                        console.log(data.responseJSON.message);
-                        console.log(data);
-                        $('#errorComment'.toString()).empty()
-                        if (!data.responseJSON.message) {
-                            $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
-                        } else {
-                            $('#errorComment'.toString()).text("you must be logged if u wanna add a comment");
-                        }
-                        $('#errorComment'.toString()).toggle()
-                    }
-                });
-            })
-            //editing form
-            $("#sendEditForm").click(function () {
-                console.log("leeel")
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var formData = {
-                    commentArea: $("#editCommentArea").val(),
-                    commentId: currentComment
-
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "editComment",
-                    data: formData,
-                    dataType: 'json',
-                    success: function (data) {
-
-                        $("#errorComment").hide()
-                        $("#c"+currentComment).find('h3').html($("#editCommentArea").val());
-                        $("#editCommentArea").val("")
-                        $("#editComment").hide();
-                        $("#addComment").show();
-
-                    },
-                    error: function (data) {
-
-                        console.log(data);
-                        $('#errorComment'.toString()).empty()
-
-                            $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
-
-                    }
-                });
-            })
-        })
-
-    </script>
     <script>
         $("#score-section").toggle()
         var testId = {{$testId}};
         var counter = -1 + {{$counter}};
         var answers = [];</script>
-    <script src="{{ asset('js/getAnswers.js') }}">
-
-
-    </script>
+    <script src="{{asset('js/comments.js')}}"></script>
+    <script src="{{ asset('js/getAnswers.js') }}"></script>
 
 @endsection
