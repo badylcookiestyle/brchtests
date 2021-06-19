@@ -72,7 +72,8 @@ Route::delete('test/comment/delete/{id}',[App\Http\Controllers\CommentController
 //*** subcomment
 Route::post('test/getSubComments',[App\Http\Controllers\SubCommentController::class,'get'])->name("getSubComments");
 Route::post('test/addSubComment',[App\Http\Controllers\SubCommentController::class,'store'])->name("addSubComment")->middleware("auth");
-Route::post('test/editSubComment',[App\Http\Controllers\CommentController::class,'edit'])->name("editSubComment")->middleware("auth");
+Route::post('test/editSubComment',[App\Http\Controllers\SubCommentController::class,'edit'])->name("editSubComment")->middleware("auth");
+Route::delete('test/subComment/delete/{id}',[App\Http\Controllers\SubCommentController::class,'destroy'])->middleware("auth")->name("subCommentDelete");
 
 //*** question
 Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'create'])

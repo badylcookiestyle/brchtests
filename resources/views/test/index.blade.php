@@ -152,6 +152,11 @@
 
     <script>
         $("#score-section").toggle()
+        @if(Auth::check())
+        var userId={{ Auth::user()->id}};
+        @else
+        var userId=0
+        @endif
         var testId = {{$testId}};
         var counter = -1 + {{$counter}};
         var answers = [];</script>
