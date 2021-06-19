@@ -66,7 +66,8 @@ jQuery(document).ready(function ($) {
         $("#edit-question").hide();
         console.log("I have been clicked")
     })
-    $(".open-edit").click(function (e) {
+    //$(".open-edit").click(function (e) {
+        $("body").on("click", ".open-edit", function (e) {
         $("#create-question").hide();
         console.log("brch")
         console.log($(this).attr("data-id"))
@@ -77,6 +78,7 @@ jQuery(document).ready(function ($) {
     })
     //******************************************************************************* EDIT
     $("#updateButton").click(function (e) {
+
         resetErrors()
         $.ajaxSetup({
             headers: {
@@ -133,21 +135,55 @@ jQuery(document).ready(function ($) {
                 reset()
                 console.log(data)
                 var question = data.testData;
+                var k=1
                 for (i = 0; i < question.length; i++) {
-                    $('#currentQuestions').append("<div class='border-top'>" +
+
+                    $('#currentQuestions').append("<div id='z"+i+"'class='border-top'>" +
                         "<a href='delete/" + question[i].id + "'class='btn text-light btn-danger float-right mt-2'  >Delete</a>" +
                         "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>" +
-
+                        //  "<button val='"+question[i].question+"' id='' class='btn btn-info mt-2 mr-2 float-right open-edit'data-id='"+question[i].id+"'>Edit </button>" +
                         "<h4 class='font-weight-bold'>question " + question[i].question + "</h4>" +
-                        " <h5 class='ml-2 text-muted'>answer 1: " + question[i].first_answer + "</h5>" +
-                        " <h5 class='ml-2 text-muted'>answer 2: " + question[i].second_answer + "</h5>"
+                        " <h5 class='ml-2 text-muted' id='q1'>answer 1: " + question[i].first_answer + "</h5>" +
+                        " <h5 class='ml-2 text-muted' id='q2'>answer 2: " + question[i].second_answer + "</h5>"
                     )
                     if (question[i].question_type == "4_questions") {
                         $('#currentQuestions').append(
-                            " <h5 class='ml-2 text-muted'>answer 3: " + question[i].third_answer + "</h5>" +
-                            " <h5 class='ml-2 text-muted'>answer 4: " + question[i].fourth_answer + "</h5>")
+
+                            " <h5 class='ml-2 text-muted' id='q3' >answer 3: " + question[i].third_answer + "</h5>" +
+                            " <h5 class='ml-2 text-muted' id='q4'>answer 4: " + question[i].fourth_answer + "</h5>")
                     }
                     $('#currentQuestions').append("</div>")
+
+                    k++
+                }
+
+                for(i=0;i<question.length;i++){
+
+                    if(question[i].correct_answer==1){
+
+
+                        $( "#z"+i ).find( "#q1" ).removeClass("text-muted").css( "color", "#28a745" );
+
+                    }
+                    if(question[i].correct_answer==2){
+
+
+
+                        $( "#z"+i).find( "#q2" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    if(question[i].correct_answer==3){
+
+
+
+                        $( "#z"+i ).find( "#q3" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    if(question[i].correct_answer==4){
+
+
+
+                        $( "#z"+i ).find( "#q4" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    k++
                 }
             },
             error: function (data) {
@@ -236,8 +272,10 @@ jQuery(document).ready(function ($) {
                 reset()
                 console.log(data.testData)
                 var question = data.testData;
+                var k=1
                 for (i = 0; i < question.length; i++) {
-                    $('#currentQuestions').append("<div class='border-top'>" +
+
+                    $('#currentQuestions').append("<div id='z"+i+"'class='border-top'>" +
                         "<a href='delete/" + question[i].id + "'class='btn text-light btn-danger float-right mt-2'  >Delete</a>" +
                         "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>" +
                         //  "<button val='"+question[i].question+"' id='' class='btn btn-info mt-2 mr-2 float-right open-edit'data-id='"+question[i].id+"'>Edit </button>" +
@@ -252,18 +290,37 @@ jQuery(document).ready(function ($) {
                             " <h5 class='ml-2 text-muted' id='q4'>answer 4: " + question[i].fourth_answer + "</h5>")
                     }
                     $('#currentQuestions').append("</div>")
-                    if(question[i].first_answer==question[i].correct_answer){
-                        $("#q"+i).removeClass("text-muted")
-                        $("#q"+i).addClass("text-success")}
-                    if(question[i].second_answer==question[i].correct_answer){
-                        $("#q"+i).removeClass("text-muted")
-                        $("#q"+i).addClass("text-success")}
-                    if(question[i].third_answer==question[i].correct_answer){
-                        $("#q"+i).removeClass("text-muted")
-                        $("#q"+i).addClass("text-success")}
-                    if(question[i].fourth_answer==question[i].correct_answer){
-                        $("#q"+i).removeClass("text-muted")
-                        $("#q"+i).addClass("text-success")}
+
+                    k++
+                }
+
+                for(i=0;i<question.length;i++){
+
+                    if(question[i].correct_answer==1){
+
+
+                        $( "#z"+i ).find( "#q1" ).removeClass("text-muted").css( "color", "#28a745" );
+
+                    }
+                    if(question[i].correct_answer==2){
+
+
+
+                        $( "#z"+i).find( "#q2" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    if(question[i].correct_answer==3){
+
+
+
+                        $( "#z"+i ).find( "#q3" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    if(question[i].correct_answer==4){
+
+
+
+                        $( "#z"+i ).find( "#q4" ).removeClass("text-muted").css( "color", "#28a745" );
+                    }
+                    k++
                 }
             },
             error: function (data) {

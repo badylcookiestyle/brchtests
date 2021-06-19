@@ -21,20 +21,14 @@ function getSubComments(id){
             console.log(data.subComments);
             $("body").find(".sc").remove()
             for(i=0;i<data.subComments.length;i++){
-                //$(".sc"+data.subComments[i].comment_id).remove()
-                // $("#c"+data.subComments[i].comm).find(".sc").remove()
                 $("#c"+data.subComments[i].comment_id).append("<div id='sc"+data.subComments[i].id+"'class='border-bottom ml-3 sc' ><h3>"+data.subComments[i].contents+"</h3><h6>"+data.subComments[i].created_at+"</h6></div>")
                 if(userId==data.subComments[i].user_id){
                     $("#sc"+data.subComments[i].id).append("<button class='btn btn-outline-danger btn-sm' data-id='"+data.subComments[i].id+"' id='deleteSubComment'>Delete</button><button class='btn btn-sm ml-2 btn-outline-info' style='font-size: 0.8em;' id='editSubCommentButton' data-id='" + data.subComments[i].id + "'>Edit</button>")
                 }
             }
-
-
         },
         error: function (data) {
-
             console.log(data);
-
         }
     });
 }
@@ -43,7 +37,6 @@ $(document).ready(function () {
 
     $("body").on("click", "#replyButton", function (e) {
         var id = $(this).data("id");
-        console.log("kek"+id)
         $('.replyForm').remove()
         $("body").find(".sc").remove()
         $("#c"+id).append(" <div class='form-group d-flex replyForm'> <label for='subCommentArea' class='m-2'>reply</label> <textarea class='form-control m-2' id='subCommentArea' rows='3'></textarea><button id='replySendButton' class='btn btn-outline-success' data-id='"+id+"'>send</button></div> ")
@@ -52,7 +45,6 @@ $(document).ready(function () {
     $("body").on("click", "#expandReplies", function (e) {
         $('.replyForm').remove()
         var id=$(this).data("id")
-        console.log(id)
        getSubComments(id)
 
     })
@@ -79,7 +71,7 @@ $(document).ready(function () {
             data: formData,
             dataType: 'json',
             success: function (data) {
-                //$("#errorComment").hide()
+
                 console.log(data);
 
                 $('.replyForm').remove()
@@ -88,7 +80,7 @@ $(document).ready(function () {
                 getSubComments(id)
             },
             error: function (data) {
-                //console.log(data.responseJSON.message);
+
                 console.log(data);
 
             }
@@ -183,7 +175,7 @@ $(document).ready(function () {
                 $("#errorComment").hide()
                 console.log(data);
                 $("#commentArea").val("")
-                $("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;'id='editCommentButton' value='"+data.contents+"' data-id='"+data.commentId+"'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button></div>")
+                $("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;' id='editCommentButton' value='"+data.contents+"' data-id='"+data.commentId+"'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button> <button class='btn btn-sm btn-outline-dark py-0' style='font-size: 0.8em;' id='replyButton' value='"+data.contents+"' data-id='"+data.commentId+"'>Reply </button></div>")
 
 
             },
@@ -194,7 +186,11 @@ $(document).ready(function () {
                 if (!data.responseJSON.message) {
                     $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
                 } else {
-                    $('#errorComment'.toString()).text("you must be logged if u wanna add a comment");
+                    if($("#commentArea").val()!=""){
+                    $('#errorComment'.toString()).text("you must be logged if u wanna add a comment");}
+                    else{
+                        $('#errorComment'.toString()).text("you have to write somethin");
+                    }
                 }
                 $('#errorComment'.toString()).toggle()
             }
