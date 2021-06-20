@@ -15,7 +15,9 @@ function deleteComment(id, url) {
             id: id
         },
         success: function(data) {
+            $("body").find(".sc").fadeOut(100)
             $("body").find(".sc").remove()
+            $("#c" + id).fadeOut(100);
             $("#c" + id).remove();
         }
     });
@@ -37,11 +39,11 @@ function sendEditComment() {
         data: formData,
         dataType: 'json',
         success: function(data) {
-            $("#errorComment").hide()
+            $("#errorComment").fadeOut(100)
             $("#c" + currentComment).find('h3').html($("#editCommentArea").val());
             $("#editCommentArea").val("")
-            $("#editComment").hide();
-            $("#addComment").show();
+            $("#editComment").fadeOut(100);
+            $("#addComment").fadeIn(100);
         },
         error: function(data) {
             $('#errorComment'.toString()).empty()
@@ -66,9 +68,11 @@ function editComment() {
         data: formData,
         dataType: 'json',
         success: function(data) {
-            $("#errorComment").hide()
+            $("#errorComment").fadeOut(100)
             $("#commentArea").val("")
             $("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;' id='editCommentButton' value='" + data.contents + "' data-id='" + data.commentId + "'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button> <button class='btn btn-sm btn-outline-dark py-0' style='font-size: 0.8em;' id='replyButton' value='" + data.contents + "' data-id='" + data.commentId + "'>Reply </button></div>")
+            $('#c'+data.commentId).fadeOut(100)
+            $('#c'+data.commentId).fadeIn(100)
         },
         error: function(data) {
             $('#errorComment'.toString()).empty()
@@ -102,6 +106,7 @@ function editSubComment() {
         dataType: 'json',
         success: function(data) {
             $("#sc" + currentSubComment).find('h3').html($("#subCommentAreaEdit").val());
+            $(".replyFormEdit").fadeOut(100);
             $(".replyFormEdit").remove();
         },
         error: function(data) {
@@ -109,14 +114,13 @@ function editSubComment() {
     });
 }
 //subcomments
-function deleteSubComment() {
+function deleteSubComment(id,url) {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
         }
     });
-    var id = $(this).data("id");
-    var url = "subComment/delete/" + id;
+
     $.ajax({
         url: url,
         type: 'delete',
@@ -124,8 +128,9 @@ function deleteSubComment() {
             id: id
         },
         success: function(data) {
+            $("body").find("#sc" + id).fadeOut(100)
             $("body").find("#sc" + id).remove()
-            //$("#c" + id).remove();
+
         }
     });
 }
@@ -145,12 +150,14 @@ function getSubComment(id) {
         data: formData,
         dataType: 'json',
         success: function(data) {
+            $("body").find(".sc").fadeOut(100)
             $("body").find(".sc").remove()
             for (i = 0; i < data.subComments.length; i++) {
                 $("#c" + data.subComments[i].comment_id).append("<div id='sc" + data.subComments[i].id + "'class='border-bottom ml-3 sc' ><h3>" + data.subComments[i].contents + "</h3><h6>" + data.subComments[i].created_at + "</h6></div>")
                 if (userId == data.subComments[i].user_id) {
                     $("#sc" + data.subComments[i].id).append("<button class='btn btn-outline-danger btn-sm' data-id='" + data.subComments[i].id + "' id='deleteSubComment'>Delete</button><button class='btn btn-sm ml-2 btn-outline-info' style='font-size: 0.8em;' id='editSubCommentButton' data-id='" + data.subComments[i].id + "'>Edit</button>")
                 }
+
             }
         },
     });
@@ -173,9 +180,11 @@ function sendReply(id, content) {
         data: formData,
         dataType: 'json',
         success: function(data) {
+            $('.replyForm').fadeOut(100)
             $('.replyForm').remove()
             getSubComment(id)
         },
     });
+    $('.replyForm').fadeOut(100)
     $('.replyForm').remove()
 }
