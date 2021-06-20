@@ -160,7 +160,9 @@
         var testId = {{$testId}};
         var counter = -1 + {{$counter}};
         var answers = [];</script>
+    <script src="{{asset('js/ajaxFunction/commentAjax.js')}}"></script>
     <script src="{{asset('js/comments.js')}}"></script>
+
     <script src="{{ asset('js/getAnswers.js') }}"></script>
 
 @endsection

@@ -293,31 +293,17 @@ jQuery(document).ready(function ($) {
 
                     k++
                 }
-
                 for(i=0;i<question.length;i++){
-
                     if(question[i].correct_answer==1){
-
-
                         $( "#z"+i ).find( "#q1" ).removeClass("text-muted").css( "color", "#28a745" );
-
                     }
                     if(question[i].correct_answer==2){
-
-
-
                         $( "#z"+i).find( "#q2" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     if(question[i].correct_answer==3){
-
-
-
                         $( "#z"+i ).find( "#q3" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     if(question[i].correct_answer==4){
-
-
-
                         $( "#z"+i ).find( "#q4" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     k++
