@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\StorageFileController;
 use App\Models\Comment;
 
@@ -33,11 +34,13 @@ class Test extends Model
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
         $comments=Comment::where("test_id",'=',$id)->orderBy("created_at","desc")->get();
+        $likes=DB::table("likes")->where("test_id", "=", $id)->count();
+        $isLiked=DB::table("likes")->where("test_id","=",$id)->where("user_id","=",$userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => true]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => true,"likes"=>$likes,"isLiked"=>$isLiked]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => false]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => false,"likes=$likes","isLiked"=>$isLiked]);
             }
         } else {
             if(Auth::check()){

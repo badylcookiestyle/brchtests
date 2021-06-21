@@ -88,6 +88,8 @@ Route::post('test/editSubComment',[App\Http\Controllers\SubCommentController::cl
 Route::delete('test/subComment/delete/{id}',[App\Http\Controllers\SubCommentController::class,'destroy'])
     ->middleware("auth")
     ->name("subCommentDelete");
+//**like
+Route::post('test/like',[App\Http\Controllers\LikeController::class,'like'])->name("likeTest")->middleware("auth");
 //*** question
 Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'create'])
     ->name('questionIndex')
@@ -99,6 +101,7 @@ Route::post('question/store',[App\Http\Controllers\QuestionController::class,'st
 Route::get('question/delete/{id}',[App\Http\Controllers\QuestionController::class,'destroy'])
     ->middleware("auth")
     ->name("questionDelete");
+
 //*** img route
 Route::post('question/changeImg',[App\Http\Controllers\TestController::class,'changeImg'])
     ->middleware("auth");
