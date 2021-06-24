@@ -72,6 +72,13 @@
                 {{__('use')}}
             </button>
         </form>
+        <form class="float-right" action="{{route("testStats",['id'=>$id])}}">
+            @csrf
+            @method('get')
+            <button type="submit"  class="btn btn-outline-info float-right mt-1 ml-2 ">
+                {{__('stats')}}
+            </button>
+        </form>
         <div class="text-center">
             <button class="btn btn-info  " data-toggle="modal" data-target="#changeImg">
                 <input type="hidden" id="ttoken" name="_token" value="{{ csrf_token() }}"/>

@@ -162,8 +162,6 @@ function getSubComment(id) {
         },
     });
 }
-
-
 function sendReply(id, content) {
     $.ajaxSetup({
         headers: {

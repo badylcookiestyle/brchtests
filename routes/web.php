@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TestScoreController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\StorageFileController;
 /*
@@ -23,6 +24,8 @@ Route::get('/about', function () {
     return view('about');
 })->name("about");
 Auth::routes();
+//*** users stats
+Route::get("/user/stats",[App\Http\Controllers\UserStatsController::class,"index"])->name("userStats")->middleware("auth");
 //*** settings
 Route::get('/settings', function () {
     return view('settings');
@@ -41,6 +44,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 	->middleware("auth");
 Route::get('/test/{id}', [App\Http\Controllers\TestController::class, 'index'])
 	->name('testIndex');
+Route::get('/test/stats/{id}', [App\Http\Controllers\TestScoreController::class, 'index'])
+    ->name('testStats')->middleware("auth");
  Route::get('/test', [App\Http\Controllers\TestController::class, 'create'])
  	->name('testCreate')
  	->middleware("auth");

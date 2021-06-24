@@ -25,7 +25,6 @@ class LikeController extends Controller
                 return response()->json(["success"=>"increment"]);
             }
         }
-
     }
     public function commentLike(Request $request){
         //return $request;

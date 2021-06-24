@@ -37,7 +37,6 @@ class Comment extends Model
     {
         $comment =  Comment::where('user_id','=',Auth::id())
             ->findOrFail($id);
-        //anti spammer if
         if ($comment != null) {
 
             $comment->delete();

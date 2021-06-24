@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\StorageFileController;
 use App\Models\Comment;
+use App\Models\TestScore;
 
 class Test extends Model
 {
@@ -35,7 +36,7 @@ class Test extends Model
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
 
-        $likesComments=DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id=1 GROUP BY comments.id  ORDER BY comments.id DESC');
+        $likesComments=DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id='.$id.' GROUP BY comments.id  ORDER BY comments.id DESC');
         $likes=json_encode(["likesTest"=>$likesTest,"likesComment"=>$likesComments]);
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
@@ -67,7 +68,6 @@ class Test extends Model
             $filename = time() . $uploadedFile->getClientOriginalName();
             $test->file_path = $filename;
             Storage::disk('local')->putFileAs('public/' . "images/", $uploadedFile, $filename);
-
         }
         $test->name = $request->testTitle;
         $test->description = $request->descriptionTest;
@@ -97,6 +97,7 @@ class Test extends Model
                 array_push($invalidAnswers, $correctAnswers[$i]->question);
             }
         }
+        TestScore::insert(["score"=>$score,"test_id"=>$request->testId,"user_id"=>Auth::id()]);
         return array('score' => $score, 'invalidAnswers' => $invalidAnswers);
     }
 
@@ -105,8 +106,6 @@ class Test extends Model
         $request->validate([
             'file' => "required|image|mimes:jpg,png,jpeg|max:4048|dimensions:max_width=100,max_height=200|dimensions:ratio=3/2",
         ]);
-
-
         if ($request->file('file')) {
             $uploadedFile = $request->file('file');
             $imagePath = $request->file('file');
@@ -117,7 +116,6 @@ class Test extends Model
             Test::where("id", "=", $request->testId)->update(["file_path" => $imageName]);
 
         }
-
         return response()->json('Image uploaded successfull');
     }
 }

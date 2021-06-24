@@ -106,7 +106,6 @@ class TestController extends Controller
             Storage::disk('local')->delete('public/images/' . $oldFile->file_path);
             $test->delete();
         }
-
         return redirect("/home");
     }
 }
