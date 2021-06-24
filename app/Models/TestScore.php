@@ -26,7 +26,8 @@ class TestScore extends Model
             $score+=$scores[$i]->score;
         }
         if($score>0){
-        $averageScore=round($score/count($scores),2);}
+            $averageScore=round($score/count($scores),2);
+        }
         $amountOfCompleted=TestScore::where("test_id","=",$id)->count();
         return view("test.testStats",["amountOfCompleted"=>$amountOfCompleted,"averageScore"=>$averageScore,"id"=>$id]);
     }

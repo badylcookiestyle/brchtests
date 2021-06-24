@@ -16,7 +16,11 @@
         </button>
     </form>
     <h1>Stats</h1>
+    @if($averageScore!=0 && $amountOfCompleted!=0)
     <h3>Average score : {{$averageScore}}</h3>
     <h3>Amount of completed tests : {{$amountOfCompleted}}</h3>
+    @else
+    <h2>Nobody had solved this test yet</h2>
+    @endif
 </div>
 @endsection
