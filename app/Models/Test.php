@@ -69,6 +69,7 @@ class Test extends Model
             $test->file_path = $filename;
             Storage::disk('local')->putFileAs('public/' . "images/", $uploadedFile, $filename);
         }
+        $test->max_score=0;
         $test->name = $request->testTitle;
         $test->description = $request->descriptionTest;
         $test->amount_of_solutions = 0;
@@ -97,8 +98,14 @@ class Test extends Model
                 array_push($invalidAnswers, $correctAnswers[$i]->question);
             }
         }
-        TestScore::insert(["score"=>$score,"test_id"=>$request->testId,"user_id"=>Auth::id()]);
-        return array('score' => $score, 'invalidAnswers' => $invalidAnswers);
+        $finalScore=0;
+        $max_scores=Test::where("id","=",$request->testId)->select("max_score")->first();
+       // return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'max_scores'=>$max_scores->max_score);
+        if($max_scores->max_score>0){
+            $finalScore=round($score/$max_scores->max_score,2);
+        }
+        TestScore::insert(["score"=>$finalScore,"test_id"=>$request->testId,"user_id"=>Auth::id()]);
+        return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'finalScore'=>$finalScore);
     }
 
     public static function changeImg($request)

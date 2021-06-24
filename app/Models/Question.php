@@ -84,6 +84,7 @@ class Question extends Model
             "third_answer" => $request->testAnswer3,
             "fourth_answer" => $request->testAnswer4
         ]);
+        DB::table("tests")->where("id","=",$request->testId)->increment("max_score");
         $testData = DB::table("questions")->where("test_id", "=", $request->testId)->get();
         return response()->json(['success' => 'Contact form submitted successfully', 'testData' => $testData]);
     }

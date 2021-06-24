@@ -45,6 +45,8 @@ class QuestionController extends Controller
 
     public function destroy($id)
     {
+        //DB::table("tests")->where("id","=",$request->testId)->increment("max_score");
+        Test::join("questions","tests.id","=","questions.test_id")->where("questions.id","=",$id)->decrement("max_score");
         Question::find($id)->delete($id);
         return redirect()->back();
     }
