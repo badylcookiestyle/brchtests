@@ -1,15 +1,10 @@
 $(document).ready(function () {
-
-    console.log(counter)
     $("#check").click(function () {
         if (counter != 0) {
             answers = []
             for (i = 1; i <= counter; i++) {
                 answers.push($("[name='questionRadios" + i + "']:checked").val())
             }
-
-            console.log(answers)
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -36,7 +31,6 @@ $(document).ready(function () {
                     $("#score-section").toggle()
                 },
                 error: function (data) {
-                    console.log(data);
                 }
             });
         }
