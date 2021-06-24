@@ -13,17 +13,15 @@ class Likes extends Migration
      */
     public function up()
     {
-        Schema::create('likes', function (Blueprint $table) {
+        Schema::create('test_likes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("test_id");
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
-
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -31,6 +29,6 @@ class Likes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likes');
+        Schema::dropIfExists('test_likes');
     }
 }

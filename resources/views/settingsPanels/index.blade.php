@@ -34,11 +34,9 @@
             </div>
             </form>
             <button class="btn btn-danger mr-3" id="changePasswordButton"> {{__('change password')}}
-
             </button>
     </div>
     <script>
-
         function hideErrors(){
             $("#errorOldPassword").hide()
             $("#errorNewPassword").hide()
@@ -47,10 +45,6 @@
         $(".password-errors").hide()
         hideErrors()
         $(document).ready(function () {
-
-
-
-
             //editing form
             $("#changePasswordButton").click(function () {
                 $(".password-errors").hide()
@@ -64,7 +58,6 @@
                     oldPassword: $("#fPassword").val(),
                     newPassword: $("#nPassword").val(),
                     newPasswordAgain:$("#nPasswordr").val(),
-
                 }
                 $.ajax({
                     type: "POST",

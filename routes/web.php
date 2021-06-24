@@ -27,42 +27,32 @@ Auth::routes();
 Route::get('/settings', function () {
     return view('settings');
 })->name("settings")->middleware("auth");
-
 Route::get('/settings/changePassword', function () {
     return view('settingsPanels.index');
 })->name("changePasswordPanel")->middleware("auth");
-
 Route::get('/settings/deleteAccount', function () {
     return view('settingsPanels.deleteAccount');
 })->name("deleteAccountPanel")->middleware("auth");
-
 Route::post('/settings/changePasswordRequest',[App\Http\Controllers\ChangePasswordController::class,"update"])->name("changePasswordRequest")->middleware("auth");
 Route::post("settings/deleteAccount",[App\Http\Controllers\ChangePasswordController::class,'deleteAccount'])->name('deleteAccount')->middleware("auth");
-
 //test routes
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 	->name('home')
 	->middleware("auth");
-
 Route::get('/test/{id}', [App\Http\Controllers\TestController::class, 'index'])
 	->name('testIndex');
-
  Route::get('/test', [App\Http\Controllers\TestController::class, 'create'])
  	->name('testCreate')
  	->middleware("auth");
-
 Route::delete('/test/{id}', [App\Http\Controllers\TestController::class, 'destroy'])
 	->name('testDelete')
 	->middleware("auth");
-
 Route::get('/test/edit/{id}',[App\Http\Controllers\TestController::class,'edit'])
    	->name("testEdit")
    	->middleware("auth");
-
 Route::post('/test', [App\Http\Controllers\TestController::class, 'store'])
 	->name('testStore')
 	->middleware("auth");
-
 Route::post('test/checkAnswers',[App\Http\Controllers\TestController::class,'checkAnswers'])
     ->name('checkAnswers')
     ->middleware();
@@ -88,8 +78,9 @@ Route::post('test/editSubComment',[App\Http\Controllers\SubCommentController::cl
 Route::delete('test/subComment/delete/{id}',[App\Http\Controllers\SubCommentController::class,'destroy'])
     ->middleware("auth")
     ->name("subCommentDelete");
-//**like
-Route::post('test/like',[App\Http\Controllers\LikeController::class,'like'])->name("likeTest")->middleware("auth");
+//**likes
+Route::post('test/testLike',[App\Http\Controllers\LikeController::class,'testLike'])->name("likeTest")->middleware("auth");
+Route::post('test/commentLike',[App\Http\Controllers\LikeController::class,'commentLike'])->name("likeComment")->middleware("auth");
 //*** question
 Route::get('question/{id}', [App\Http\Controllers\QuestionController::class, 'create'])
     ->name('questionIndex')
@@ -101,7 +92,6 @@ Route::post('question/store',[App\Http\Controllers\QuestionController::class,'st
 Route::get('question/delete/{id}',[App\Http\Controllers\QuestionController::class,'destroy'])
     ->middleware("auth")
     ->name("questionDelete");
-
 //*** img route
 Route::post('question/changeImg',[App\Http\Controllers\TestController::class,'changeImg'])
     ->middleware("auth");

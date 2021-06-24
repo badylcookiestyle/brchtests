@@ -26,10 +26,9 @@ class QuestionController extends Controller
         $userId=Auth::user()->id;
         $ifItsUsersTest=Test::where("id","=",$id)->where("user_id","=",$userId)->get();
         if(count($ifItsUsersTest)>0){
-        $testData = DB::table("questions")->where("test_id", "=", $id)->get();
-        $img = DB::table("tests")->where("id", "=", $id)->select("file_path", "name", "description")->first();
-
-        return view("question.create", ["id" => $id, "testData" => $testData, "description" => $img]);
+            $testData = DB::table("questions")->where("test_id", "=", $id)->get();
+            $img = DB::table("tests")->where("id", "=", $id)->select("file_path", "name", "description")->first();
+            return view("question.create", ["id" => $id, "testData" => $testData, "description" => $img]);
     }
         return    redirect()->route("notWorking");
     }

@@ -40,7 +40,6 @@ class SubComment extends Model
             ->findOrFail($id);
         //anti spammer if
         if ($subComment != null) {
-
             $subComment->delete();
         }
         return response()->json(["message"=>"content has been deleted"]);

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
  @if($errors->any())
       <div class="w-4/8 m-auto text-center">
           @foreach($errors->all() as $error)
@@ -33,9 +32,6 @@
   <button class="btn btn-success">{{__('create')}}</button>
 </form>
 </div>
-
 </div>
-
-
 	</section>
 @endsection

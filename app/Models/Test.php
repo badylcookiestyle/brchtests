@@ -23,30 +23,32 @@ class Test extends Model
     {
         return $this->belongsTo(User::class)->hasMany(Comment::class);
     }
-
     public $timestamps = true;
-
     public static function index($id)
     {
-        $userId=0;
-        if(Auth::check()){
-        $userId = Auth::user()->id;}
+        $userId = 0;
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+        }
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
-        $comments=Comment::where("test_id",'=',$id)->orderBy("created_at","desc")->get();
-        $likes=DB::table("likes")->where("test_id", "=", $id)->count();
-        $isLiked=DB::table("likes")->where("test_id","=",$id)->where("user_id","=",$userId)->count();
+        $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
+        $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
+
+        $likesComments=DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id=1 GROUP BY comments.id  ORDER BY comments.id DESC');
+        $likes=json_encode(["likesTest"=>$likesTest,"likesComment"=>$likesComments]);
+        $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => true,"likes"=>$likes,"isLiked"=>$isLiked]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions,'comments'=>$comments,"canEdit" => false,"likes=$likes","isLiked"=>$isLiked]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes"=>$likes, "isLiked" => $isLiked]);
             }
         } else {
-            if(Auth::check()){
-            return redirect()->route("questionIndex", ['id' => $id]);}
-            else{
-                return  redirect()->route("notWorking");
+            if (Auth::check()) {
+                return redirect()->route("questionIndex", ['id' => $id]);
+            } else {
+                return redirect()->route("notWorking");
             }
         }
     }

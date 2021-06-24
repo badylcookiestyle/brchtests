@@ -56,7 +56,6 @@ $(document).ready(function () {
         $("#addComment").fadeOut(100);
         $("#editCommentArea").val($(this).val())
         currentComment = $(this).data("id")
-
     })
     $("#commentBack").click(function () {
         $("#editComment").fadeOut(100);
