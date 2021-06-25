@@ -24,7 +24,7 @@ $(document).ready(function () {
                     $("#test-section").toggle();
                     $("#score").append("<h1>your score "+data.score +"</h1>")
                     if(data.invalidAnswers.length>0){
-                        $("#score").append("<h2>You have answered wrongly to the questions below</h2><h3>Yours score "+data.finalScore+"%</h3>");
+                        $("#score").append("<h3>Yours score "+data.finalScore+"%</h3><h2>You have answered wrongly to the questions below</h2>");
                         for (i = 0; i < data.invalidAnswers.length; i++) {
                             $("#score").append("<h5>" + data.invalidAnswers[i] + "</h5>");
                         }}

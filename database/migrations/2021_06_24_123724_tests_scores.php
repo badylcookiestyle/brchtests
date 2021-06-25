@@ -17,6 +17,8 @@ class TestsScores extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->float("score");
+            $table->unsignedInteger("correct_answers");
+            $table->unsignedInteger("incorrect_answers");
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("test_id");
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

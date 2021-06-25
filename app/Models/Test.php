@@ -103,8 +103,9 @@ class Test extends Model
        // return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'max_scores'=>$max_scores->max_score);
         if($max_scores->max_score>0){
             $finalScore=round($score/$max_scores->max_score,2);
+
         }
-        TestScore::insert(["score"=>$finalScore,"test_id"=>$request->testId,"user_id"=>Auth::id()]);
+        TestScore::insert(["score"=>$finalScore,"test_id"=>$request->testId,"user_id"=>Auth::id(),"correct_answers"=>$score,"incorrect_answers"=>count($invalidAnswers)]);
         return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'finalScore'=>$finalScore);
     }
 

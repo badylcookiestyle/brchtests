@@ -10,7 +10,7 @@ class TestScore extends Model
     use HasFactory;
 
     protected $table = "tests_scores";
-    protected $fillable = ["score","user_id","test_id"];
+    protected $fillable = ["score","correct_anwsers","incorrect_answers","user_id","test_id"];
     protected $primaryKey = "id";
     public $timestamps = true;
 
