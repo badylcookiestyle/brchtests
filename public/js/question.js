@@ -28,7 +28,7 @@ function resetErrors() {
     $('#correctAnswer').hide()
     $("#errorDescription").hide()
 }
-
+resetErrors()
 $("#flexRadioDefault1").click(function () {
     reset()
     $(".testAnswer1").show()
@@ -58,7 +58,7 @@ $("#flexRadioDefault2Edit").click(function () {
 });
 
 jQuery(document).ready(function ($) {
-    resetErrors()
+
     // CREATE
     $("#back-to-create").click(function (e) {
         reset()
