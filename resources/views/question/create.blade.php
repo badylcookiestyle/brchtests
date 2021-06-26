@@ -273,6 +273,9 @@
         var ttoken = "{{csrf_token()}}"
         var currentId ={{$id}}
     </script>
+    <script src="{{ asset('js/ajaxFunction/questionAjax.js') }}">
+
+    </script>
     <script src="{{ asset('js/question.js') }}">
 
     </script>
