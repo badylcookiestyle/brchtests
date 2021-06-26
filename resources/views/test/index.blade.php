@@ -160,6 +160,7 @@
                         @php
                             $rage=json_decode($likes)->likesComment;
                         @endphp
+                        @if($ifSubComments[$j]->amountOfSubc!=0)
                         @if(isset(json_decode($likes)->likesComment[$j]->result))
                             <span class="ml-3 lkt{{$comment->id}}" id="commentLikeAmount{{$comment->id}}"  style="font-size:1.2em;">{{json_decode($likes)->likesComment[$j]->result}}</span>
                             @else
@@ -167,8 +168,12 @@
                             @endif
                         <br>
                     @endif
-                    <button id="expandReplies" class="btn btn-toolbar" data-id="{{ $comment->id }}">replies</button>
-                </div>
+
+                    <div class="row">
+                    <button id="expandReplies" class="btn btn-toolbar" data-id="{{ $comment->id }}">replies</button><p class="mt-2">{{$ifSubComments[$j]->amountOfSubc}}</p>
+                    </div>
+                    @endif
+                    </div>
                 @php
                 $j++
                     @endphp

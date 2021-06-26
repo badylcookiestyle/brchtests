@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\StorageFileController;
 use App\Models\Comment;
+use App\Models\SubComment;
 use App\Models\TestScore;
 
 class Test extends Model
@@ -28,22 +29,27 @@ class Test extends Model
     public static function index($id)
     {
         $userId = 0;
+        $hasSubComments=0;
         if (Auth::check()) {
             $userId = Auth::user()->id;
         }
+
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
-
+        if($comments[0]->id!==0){
+        //$hasSubComments=SubComment::where("comment_id","=",$comments[0]->id)->groupBy("comment_id")->count("id");
+            $hasSubComments=SubComment::join("comments","sub_comments.comment_id","=","comments.id")->where("test_id","=",$id)->select(DB::raw("count(sub_comments.id) as amountOfSubc"))->groupBy("comment_id")->orderBy("comments.id","DESC")->get();
+        }
         $likesComments=DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id='.$id.' GROUP BY comments.id  ORDER BY comments.id DESC');
         $likes=json_encode(["likesTest"=>$likesTest,"likesComment"=>$likesComments]);
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked,"ifSubComments"=> $hasSubComments]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes"=>$likes, "isLiked" => $isLiked]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes"=>$likes, "isLiked" => $isLiked,"ifSubComments"=> $hasSubComments]);
             }
         } else {
             if (Auth::check()) {
