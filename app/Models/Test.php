@@ -39,13 +39,14 @@ class Test extends Model
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
+        if(isset($comments[0])){
         if ($comments[0]->id !== 0) {
             $hasSubComments = SubComment::rightJoin("comments", "sub_comments.comment_id", "=", "comments.id")
                 ->where("test_id", "=", $id)
                 ->select(DB::raw("count(sub_comments.id) as amountOfSubc"))
                 ->groupBy("comment_id")->orderBy("comments.id", "DESC")
                 ->get();
-        }
+        }}
         $likesComments = DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id=' . $id . ' GROUP BY comments.id  ORDER BY comments.id DESC');
         $likes = json_encode(["likesTest" => $likesTest, "likesComment" => $likesComments]);
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();

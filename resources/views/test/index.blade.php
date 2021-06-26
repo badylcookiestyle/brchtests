@@ -5,8 +5,51 @@
         use App\Models\SubComment;
         $j=0;
     @endphp
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="warningType" id="warningOnly" value="warningOnly1">
+                        <label class="form-check-label" for="warningOnly">{{__("warningOnly")}}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="warningType" id="warningWithDelete" value="warningOnlyDelete">
+                        <label class="form-check-label" for="warningOnlyDelete">{{__("warningOnlyDelete")}}</label>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+                    <div class="form-group ">
+                        <label for="reportOrWarningTitle">test_title</label>
+                        <input type="text" class="form-control" id="reportOrWarningTitle" name="reportOrWarningTitle" placeholder="Enter a report">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="reportOrWarningDescription">Description</label>
+                        <textarea class="form-control" id="reportOrWarningDescription" name="reportOrWarningDescription" rows="8" maxlength="500" style="resize:none"></textarea>
+                    </div>
+                    <button   id="AdminWarningButton" class="btn btn-danger m-3 float-right">Send</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <section class="container">
+
+
         @if(Auth::check())
+            @if(Auth::User()->isAdmin())
+
+
+                    <button type="submit" data-toggle="modal" class="btn btn-outline-danger float-right mt-1 ml-2 "data-target="#modal">
+                        {{__('warning/delete')}}
+                    </button>
+
+            @endif
             <form class="float-right" action="{{route('home')}}">
                 @csrf
                 @method('get')
@@ -43,6 +86,7 @@
             <button class="btn btn-dark float-right" id="again">solve this test again</button>
             <div id="score"></div>
         </div>
+
         <div id="test-section">
             <h1>{{$testData->name}}</h1>
             <p>{{$testData->description}}</p>
@@ -129,6 +173,7 @@
         <button id="commentBack" class="btn btn-info ml-2" style="height:50px;">back</button>
         </div>
         <hr>
+
         <div id="comments-list">
             @foreach($comments as $comment)
 
@@ -179,6 +224,7 @@
                     @endphp
             @endforeach
         </div>
+
     </section>
     </div>
     </section>
@@ -192,6 +238,7 @@
         var testId = {{$testId}};
         var counter = -1 + {{$counter}};
         var answers = [];</script>
+    <script src="{{asset('js/ajaxFunction/adminsReport.js')}}"></script>
     <script src="{{asset('js/ajaxFunction/like.js')}}"></script>
     <script src="{{asset('js/ajaxFunction/commentAjax.js')}}"></script>
     <script src="{{asset('js/comments.js')}}"></script>

@@ -105,3 +105,8 @@ Route::post('question/changeDescription',[App\Http\Controllers\DescriptionContro
     ->middleware("auth");
 Route::get('/notWorking', [App\Http\Controllers\TestController::class, 'notWorking'])
     ->name('notWorking');
+//*** Admin Warnings/reports
+Route::post("test/warningOrDelete",[App\Http\Controllers\ReportController::class,"warningOrDelete"])
+    ->name("warningOrDelete")
+    ->middleware("auth");
+//*** users reports
