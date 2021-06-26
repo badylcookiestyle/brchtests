@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
         $("#testQuestionEdit").val(variable)
         $("#editId").val($(this).attr("data-id"));
     })
-    //******************************************************************************* EDIT
+    //*** EDIT
     $("#updateButton").click(function (e) {
 
         resetErrors()
@@ -215,7 +215,7 @@ jQuery(document).ready(function ($) {
             }
         });
     })
-    //**************************************************************************** ADD NEW QUESTION
+    //*** ADD NEW QUESTION
     $("#btn-add").click(function (e) {
         resetErrors()
         $.ajaxSetup({
@@ -277,8 +277,7 @@ jQuery(document).ready(function ($) {
 
                     $('#currentQuestions').append("<div id='z"+i+"'class='border-top'>" +
                         "<a href='delete/" + question[i].id + "'class='btn text-light btn-danger float-right mt-2'  >Delete</a>" +
-                        "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>" +
-                        //  "<button val='"+question[i].question+"' id='' class='btn btn-info mt-2 mr-2 float-right open-edit'data-id='"+question[i].id+"'>Edit </button>" +
+                        "<button  val='" + question[i].question + "' class='btn btn-info mt-2 mr-2 float-right open-edit' data-id='" + question[i].id + "'>Edit </button>"+
                         "<h4 class='font-weight-bold'>question " + question[i].question + "</h4>" +
                         " <h5 class='ml-2 text-muted' id='q1'>answer 1: " + question[i].first_answer + "</h5>" +
                         " <h5 class='ml-2 text-muted' id='q2'>answer 2: " + question[i].second_answer + "</h5>"
@@ -338,7 +337,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    //****************************************** change description
+    //*** change description
     $("#change-description-button").click(function () {
         $.ajaxSetup({
             headers: {
@@ -373,7 +372,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    //****************************************************** Image upload
+    //*** Image upload
     $("#change-image-button").click(function () {
         $.ajaxSetup({
             headers: {

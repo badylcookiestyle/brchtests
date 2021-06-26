@@ -12,7 +12,9 @@ class UserStats extends Model
     public static function index(){
         $score=0;
         $averageScore=0;
-        $scores=TestScore::where("user_id","=",Auth::id())->select("score")->get();
+        $scores=TestScore::where("user_id","=",Auth::id())
+            ->select("score")
+            ->get();
         for($i=0;$i<count($scores);$i++){
             $score+=$scores[$i]->score;
         }

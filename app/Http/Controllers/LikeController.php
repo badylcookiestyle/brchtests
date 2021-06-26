@@ -15,9 +15,15 @@ class LikeController extends Controller
 
         $ifTestExist=Test::find($testId);
         if($ifTestExist){
-            $isLiked=DB::table('test_likes')->where("user_id","=",$userId)->where("test_id","=",$testId)->first();
+            $isLiked=DB::table('test_likes')
+                ->where("user_id","=",$userId)
+                ->where("test_id","=",$testId)
+                ->first();
             if($isLiked){
-                DB::table('test_likes')->where("user_id","=",$userId)->where("test_id","=",$testId)->delete();
+                DB::table('test_likes')
+                    ->where("user_id","=",$userId)
+                    ->where("test_id","=",$testId)
+                    ->delete();
                 return response()->json(["success"=>"decrement"]);
             }
             else{
@@ -27,14 +33,18 @@ class LikeController extends Controller
         }
     }
     public function commentLike(Request $request){
-        //return $request;
         $userId = Auth::user()->id;
         $commentId=$request->commentId;
         $ifCommentExist=Comment::find($commentId);
         if($ifCommentExist){
-            $isLiked=DB::table('comment_likes')->where("user_id",'=',$userId)->where("comment_id","=",$commentId)->first();
+            $isLiked=DB::table('comment_likes')
+                ->where("user_id",'=',$userId)
+                ->where("comment_id","=",$commentId)
+                ->first();
             if($isLiked){
-                DB::table("comment_likes")->where("user_id","=",$userId)->where("comment_id","=",$commentId)->delete();
+                DB::table("comment_likes")->where("user_id","=",$userId)
+                    ->where("comment_id","=",$commentId)
+                    ->delete();
                 return response()->json(["success"=>"decrement"]);
             }
             else{

@@ -25,31 +25,35 @@ class Test extends Model
     {
         return $this->belongsTo(User::class)->hasMany(Comment::class);
     }
+
     public $timestamps = true;
+
     public static function index($id)
     {
         $userId = 0;
-        $hasSubComments=0;
+        $hasSubComments = 0;
         if (Auth::check()) {
             $userId = Auth::user()->id;
         }
-
         $questions = Question::where("test_id", "=", $id)->get();
         $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
-        if($comments[0]->id!==0){
-        //$hasSubComments=SubComment::where("comment_id","=",$comments[0]->id)->groupBy("comment_id")->count("id");
-            $hasSubComments=SubComment::join("comments","sub_comments.comment_id","=","comments.id")->where("test_id","=",$id)->select(DB::raw("count(sub_comments.id) as amountOfSubc"))->groupBy("comment_id")->orderBy("comments.id","DESC")->get();
+        if ($comments[0]->id !== 0) {
+            $hasSubComments = SubComment::rightJoin("comments", "sub_comments.comment_id", "=", "comments.id")
+                ->where("test_id", "=", $id)
+                ->select(DB::raw("count(sub_comments.id) as amountOfSubc"))
+                ->groupBy("comment_id")->orderBy("comments.id", "DESC")
+                ->get();
         }
-        $likesComments=DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id='.$id.' GROUP BY comments.id  ORDER BY comments.id DESC');
-        $likes=json_encode(["likesTest"=>$likesTest,"likesComment"=>$likesComments]);
+        $likesComments = DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id=' . $id . ' GROUP BY comments.id  ORDER BY comments.id DESC');
+        $likes = json_encode(["likesTest" => $likesTest, "likesComment" => $likesComments]);
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked,"ifSubComments"=> $hasSubComments]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked, "ifSubComments" => $hasSubComments]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes"=>$likes, "isLiked" => $isLiked,"ifSubComments"=> $hasSubComments]);
+                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes" => $likes, "isLiked" => $isLiked, "ifSubComments" => $hasSubComments]);
             }
         } else {
             if (Auth::check()) {
@@ -67,7 +71,6 @@ class Test extends Model
 
     public static function store($request)
     {
-
         $test = new Test;
         if ($request->file('testImg') != "") {
             $uploadedFile = $request->file('testImg');
@@ -75,7 +78,7 @@ class Test extends Model
             $test->file_path = $filename;
             Storage::disk('local')->putFileAs('public/' . "images/", $uploadedFile, $filename);
         }
-        $test->max_score=0;
+        $test->max_score = 0;
         $test->name = $request->testTitle;
         $test->description = $request->descriptionTest;
         $test->amount_of_solutions = 0;
@@ -91,10 +94,13 @@ class Test extends Model
 
     public static function checkAnswers($request)
     {
+        $finalScore = 0;
         $score = 0;
         $invalidAnswers = array();
         $answers = $request->answers;
-        $correctAnswers = Question::where("test_id", "=", $request->testId)->select("correct_answer", "question")->get();
+        $correctAnswers = Question::where("test_id", "=", $request->testId)
+            ->select("correct_answer", "question")
+            ->get();
         Test::where("id", "=", $request->testId)->increment("amount_of_solutions");
         $correctAnswers->toArray();
         for ($i = 0; $i < count($request->answers); $i++) {
@@ -104,15 +110,14 @@ class Test extends Model
                 array_push($invalidAnswers, $correctAnswers[$i]->question);
             }
         }
-        $finalScore=0;
-        $max_scores=Test::where("id","=",$request->testId)->select("max_score")->first();
-       // return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'max_scores'=>$max_scores->max_score);
-        if($max_scores->max_score>0){
-            $finalScore=round($score/$max_scores->max_score,2);
-
+        $max_scores = Test::where("id", "=", $request->testId)
+            ->select("max_score")
+            ->first();
+        if ($max_scores->max_score > 0) {
+            $finalScore = round($score / $max_scores->max_score, 2);
         }
-        TestScore::insert(["score"=>$finalScore,"test_id"=>$request->testId,"user_id"=>Auth::id(),"correct_answers"=>$score,"incorrect_answers"=>count($invalidAnswers)]);
-        return array('score' => $score, 'invalidAnswers' => $invalidAnswers,'finalScore'=>$finalScore);
+        TestScore::insert(["score" => $finalScore, "test_id" => $request->testId, "user_id" => Auth::id(), "correct_answers" => $score, "incorrect_answers" => count($invalidAnswers)]);
+        return array('score' => $score, 'invalidAnswers' => $invalidAnswers, 'finalScore' => $finalScore);
     }
 
     public static function changeImg($request)
@@ -128,9 +133,7 @@ class Test extends Model
             $oldFile = Test::where("id", "=", $request->testId)->select("file_path")->first();
             Storage::disk('local')->delete('public/images/' . $oldFile->file_path);
             Test::where("id", "=", $request->testId)->update(["file_path" => $imageName]);
-
         }
         return response()->json('Image uploaded successfull');
     }
 }
-
