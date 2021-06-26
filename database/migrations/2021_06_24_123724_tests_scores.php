@@ -19,7 +19,7 @@ class TestsScores extends Migration
             $table->float("score");
             $table->unsignedInteger("correct_answers");
             $table->unsignedInteger("incorrect_answers");
-            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->unsignedBigInteger("test_id");
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
