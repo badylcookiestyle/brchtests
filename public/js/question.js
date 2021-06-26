@@ -59,14 +59,14 @@ $("#flexRadioDefault2Edit").click(function () {
 
 jQuery(document).ready(function ($) {
 
-    // CREATE
+    //*** CREATE
     $("#back-to-create").click(function (e) {
         reset()
         $("#create-question").show();
         $("#edit-question").hide();
         console.log("I have been clicked")
     })
-    //$(".open-edit").click(function (e) {
+
         $("body").on("click", ".open-edit", function (e) {
         $("#create-question").hide();
         console.log("brch")
@@ -293,16 +293,29 @@ jQuery(document).ready(function ($) {
                     k++
                 }
                 for(i=0;i<question.length;i++){
+
                     if(question[i].correct_answer==1){
+
+
                         $( "#z"+i ).find( "#q1" ).removeClass("text-muted").css( "color", "#28a745" );
+
                     }
                     if(question[i].correct_answer==2){
+
+
+
                         $( "#z"+i).find( "#q2" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     if(question[i].correct_answer==3){
+
+
+
                         $( "#z"+i ).find( "#q3" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     if(question[i].correct_answer==4){
+
+
+
                         $( "#z"+i ).find( "#q4" ).removeClass("text-muted").css( "color", "#28a745" );
                     }
                     k++
