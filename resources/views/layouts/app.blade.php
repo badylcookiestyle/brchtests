@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -73,6 +74,9 @@
                                     <a class="dropdown-item" href="{{ route('settings') }}"
                                     >
                                         {{ __('Settings') }}
+                                    </a>
+                                    <a class="dropdown-item" href="">
+                                        {{__("Notifications")." ".$data}}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

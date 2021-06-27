@@ -19,6 +19,7 @@ class ReportsTable extends Migration
             $table->string("title");
             $table->string("reason");
             $table->string("action");
+            $table->boolean("read")->default(false);
             $table->unsignedBigInteger("reporting_user_id");
             $table->unsignedBigInteger("user_id");
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

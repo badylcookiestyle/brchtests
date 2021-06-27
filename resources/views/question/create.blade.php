@@ -108,7 +108,6 @@
                 <div class='border-top'>
                     <a href="{{ route('questionDelete',$test->id) }}" class="btn btn-danger mt-2 float-right"
                        data-id="{{ $test->id }}">Delete</a>
-
                     <button id="" val="{{$test->question}}" class="btn btn-info mt-2 mr-2 float-right open-edit"
                             data-id="{{ $test->id }}">Edit
                     </button>
