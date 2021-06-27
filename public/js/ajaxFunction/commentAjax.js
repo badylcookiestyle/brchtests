@@ -17,6 +17,7 @@ function deleteComment(id, url) {
         success: function(data) {
             $("body").find(".sc").fadeOut(100)
             $("body").find(".sc").remove()
+
             $("#c" + id).fadeOut(100);
             $("#c" + id).remove();
         }
@@ -46,8 +47,9 @@ function sendEditComment() {
             $("#addComment").fadeIn(100);
         },
         error: function(data) {
-
             $("#errorComment").fadeIn(100)
+            $('#errorComment'.toString()).empty()
+
             if (!data.responseJSON.message) {
                 $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
             } else {
@@ -75,13 +77,14 @@ function editComment() {
     var formData = {
         commentArea: $("#commentArea").val(),
         testId: testId
-    }
+    };
     $.ajax({
         type: "POST",
         url: "addComment",
         data: formData,
         dataType: 'json',
         success: function(data) {
+
             $("#errorComment").fadeOut(100)
             $("#commentArea").val("")
             $("#comments-list").prepend("<div id='c" + data.commentId + "'><h3>" + data.contents + "</h3><h6>" + data.created_at + "</h6><button class='btn btn-sm btn-outline-info py-0 mr-2' style='font-size: 0.8em;' id='editCommentButton' value='" + data.contents + "' data-id='" + data.commentId + "'>Edit </button><button class='btn btn-sm btn-outline-danger py-0' style='font-size: 0.8em;' id='deleteComment' data-id='" + data.commentId + "'>Delete</button> <button class='btn btn-sm btn-outline-dark py-0' style='font-size: 0.8em;' id='replyButton' value='" + data.contents + "' data-id='" + data.commentId + "'>Reply </button><button id='commentLikeButton' class='btn ml-1 btn-outline-dark lk"+data.commentId+"' data-id='"+data.commentId+"'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor'" +
@@ -92,13 +95,14 @@ function editComment() {
             $('#c'+data.commentId).fadeIn(100)
         },
         error: function(data) {
+
             $("#errorComment").fadeIn(100)
             $('#errorComment'.toString()).empty()
             if (!data.responseJSON.message) {
                 $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
             } else {
                 if ($("#commentArea").val() != "") {
-                    if($("#editCommentArea").val().length<250) {
+                    if($("#commentArea").val().length<250) {
                         $('#errorComment'.toString()).text("you must be logged if u wanna edit a comment");
                     }
                     else{
@@ -108,7 +112,7 @@ function editComment() {
                     $('#errorComment'.toString()).text("you have to write somethin");
                 }
             }
-            $('#errorComment'.toString()).toggle()
+
         }
     });
 }

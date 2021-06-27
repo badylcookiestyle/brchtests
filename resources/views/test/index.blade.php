@@ -221,7 +221,7 @@
 
                     <div class="row">
                         @if(isset($ifSubComments[$j]) &&$ifSubComments[$j]->amountOfSubc!=0)
-                    <button id="expandReplies" class="btn btn-toolbar" data-id="{{ $comment->id }}">replies</button><p class="mt-2">{{$ifSubComments[$j]->amountOfSubc}}</p>
+                    <button id="expandReplies" class="btn btn-toolbar" data-id="{{ $comment->id }}">replies</button><p class="mt-2" id="p{{$comment->id}}">{{$ifSubComments[$j]->amountOfSubc}}</p>
                    @endif
                     </div>
                     @endif
