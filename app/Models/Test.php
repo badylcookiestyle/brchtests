@@ -52,9 +52,24 @@ class Test extends Model
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => true, "likes" => $likes, "isLiked" => $isLiked, "ifSubComments" => $hasSubComments]);
+                //brch I should optymalize this
+                return view("test.index", ['testData' => $testData,
+                    'questions' => $questions,
+                    'comments' => $comments,
+                    "canEdit" => true,
+                    "likes" => $likes,
+                    "isLiked" => $isLiked,
+                    "ifSubComments" => $hasSubComments
+                ]);
             } else {
-                return view("test.index", ['testData' => $testData, 'questions' => $questions, 'comments' => $comments, "canEdit" => false, "likes" => $likes, "isLiked" => $isLiked, "ifSubComments" => $hasSubComments]);
+                return view("test.index", ['testData' => $testData,
+                    'questions' => $questions,
+                    'comments' => $comments,
+                    "canEdit" => false,
+                    "likes" => $likes,
+                    "isLiked" => $isLiked,
+                    "ifSubComments" => $hasSubComments
+                ]);
             }
         } else {
             if (Auth::check()) {
