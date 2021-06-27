@@ -1,5 +1,5 @@
 var k=0
-
+var choosenAnswer=0
 function getChoosenAnswerEdit(){
     if (jQuery('#correctAnswer1Edit').is(':checked')) {
         return choosenAnswer = 1
@@ -34,10 +34,37 @@ function getChoosenAnswer(){
         $('#errorTestType'.toString()).text("You have to choose correct answer")
     }
 }
-function drawQuestionErrors(question){
+function drawQuestionErrors(data){
+    if (data.responseJSON.errors.testAnswer1) {
+        $('#errorAnswer1'.toString()).text(data.responseJSON.errors.testAnswer1)
+        $('#errorAnswer1'.toString()).toggle()
+
+    }
+    if (data.responseJSON.errors.testAnswer2) {
+        $('#errorAnswer2'.toString()).text(data.responseJSON.errors.testAnswer2)
+        $('#errorAnswer2'.toString()).toggle()
+    }
+    if (data.responseJSON.errors.testAnswer3) {
+        $('#errorAnswer3'.toString()).text(data.responseJSON.errors.testAnswer3)
+        $('#errorAnswer3'.toString()).toggle()
+    }
+    if (data.responseJSON.errors.testAnswer4) {
+        $('#errorAnswer4'.toString()).text(data.responseJSON.errors.testAnswer4)
+        $('#errorAnswer4'.toString()).toggle()
+    }
+    if (data.responseJSON.errors.testQuestion) {
+        $('#errorQuestion'.toString()).text(data.responseJSON.errors.testQuestion)
+        $('#errorQuestion'.toString()).toggle()
+    }
+    if (data.responseJSON.errors.correct_answer) {
+        $('#errorTestType'.toString()).text(data.responseJSON.errors.correct_answer)
+        $('#errorTestType'.toString()).toggle()
+    }
+}function drawQuestionErrorsEdit(data){
     if (data.responseJSON.errors.testAnswer1Edit) {
         $('#errorAnswer1'.toString()).text(data.responseJSON.errors.testAnswer1Edit)
         $('#errorAnswer1'.toString()).toggle()
+
     }
     if (data.responseJSON.errors.testAnswer2Edit) {
         $('#errorAnswer2'.toString()).text(data.responseJSON.errors.testAnswer2Edit)
@@ -142,7 +169,7 @@ function edit(e){
         },
         error: function (data) {
             console.log(data);
-            drawQuestionErrors(data)
+            drawQuestionErrorsEdit(data)
         }
     });
 }
