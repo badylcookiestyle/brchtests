@@ -75,7 +75,7 @@
                                     >
                                         {{ __('Settings') }}
                                     </a>
-                                    <a class="dropdown-item" href="">
+                                    <a class="dropdown-item" href="{{route('reports')}}">
                                         {{__("Notifications")." ".$data}}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

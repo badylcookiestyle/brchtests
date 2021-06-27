@@ -46,8 +46,22 @@ function sendEditComment() {
             $("#addComment").fadeIn(100);
         },
         error: function(data) {
-            $('#errorComment'.toString()).empty()
-            $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
+
+            $("#errorComment").fadeIn(100)
+            if (!data.responseJSON.message) {
+                $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
+            } else {
+                if ($("#editCommentArea").val() != "") {
+                   if($("#editCommentArea").val().length<250) {
+                       $('#errorComment'.toString()).text("you must be logged if u wanna edit a comment");
+                   }
+                   else{
+                       $('#errorComment'.toString()).text("your comment is too long");
+                   }
+                   } else {
+                    $('#errorComment'.toString()).text("you have to write somethin");
+                }
+            }
         }
     });
 }
@@ -78,12 +92,18 @@ function editComment() {
             $('#c'+data.commentId).fadeIn(100)
         },
         error: function(data) {
+            $("#errorComment").fadeIn(100)
             $('#errorComment'.toString()).empty()
             if (!data.responseJSON.message) {
                 $('#errorComment'.toString()).text(data.responseJSON.errors.commentArea)
             } else {
                 if ($("#commentArea").val() != "") {
-                    $('#errorComment'.toString()).text("you must be logged if u wanna add a comment");
+                    if($("#editCommentArea").val().length<250) {
+                        $('#errorComment'.toString()).text("you must be logged if u wanna edit a comment");
+                    }
+                    else{
+                        $('#errorComment'.toString()).text("your comment is too long");
+                    }
                 } else {
                     $('#errorComment'.toString()).text("you have to write somethin");
                 }

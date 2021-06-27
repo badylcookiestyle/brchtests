@@ -11,6 +11,13 @@ class ReportController extends Controller
             return Report::warningOrDelete($request);
         }
         //here will be displayed error :)
-        return;
+        return response()->json('nice try :)');
+    }
+    public function index(){
+        return Report::index();
+    }
+    public function read(Request $request){
+        return Report::read($request->reportId);
+        //return $request;
     }
 }

@@ -5,7 +5,7 @@ $("#AdminWarningButton").click(function(){
     if (jQuery('#warningOnly').is(':checked')) {
         action="warningOnly";
     }
-    if(jQuery("#warningWithDelete")){
+    if(jQuery("#warningWithDelete").is(':checked')){
         action="warningWithDelete";
     }
     if (jQuery('#correctAnswer4Edit').is(':checked')) {
@@ -28,13 +28,6 @@ $("#AdminWarningButton").click(function(){
         url: "warningOrDelete",
         data: formData,
         dataType: 'json',
-        success: function(data) {
-            console.log(data)
-            console.log("ok")
-        },
-        error: function(data) {
-            console.log(data)
-            console.log(testId)
-        }
+
     });
 })
