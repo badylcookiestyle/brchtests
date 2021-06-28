@@ -11,7 +11,7 @@
 
 
     @endphp
-    <!-- Modal -->
+    <!--Admins Modal -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -44,6 +44,31 @@
             </div>
         </div>
     </div>
+    <!-- Users Modal -->
+    <div class="modal fade" id="modalReport" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                <h1>So u can report this user</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group ">
+                        <label for="reportTitle">test_title</label>
+                        <input type="text" class="form-control" id="reportTitle" name="reportTitle" placeholder="Enter a report">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="reportDescription">Description</label>
+                        <textarea class="form-control" id="reportDescription" name="reportDescription" rows="8" maxlength="500" style="resize:none"></textarea>
+                    </div>
+                    <button   id="reportButton" class="btn btn-danger m-3 float-right">Send</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <section class="container">
 
 
@@ -54,7 +79,10 @@
                     <button type="submit" data-toggle="modal" class="btn btn-outline-danger float-right mt-1 ml-2 "data-target="#modal">
                         {{__('warning/delete')}}
                     </button>
-
+            @else
+                <button type="submit" data-toggle="modal" class="btn btn-outline-danger float-right mt-1 ml-2 "data-target="#modalReport">
+                    {{__('report')}}
+                </button>
             @endif
             <form class="float-right" action="{{route('home')}}">
                 @csrf

@@ -19,6 +19,7 @@ class ReportsTable extends Migration
             $table->string("title");
             $table->string("reason");
             $table->string("action");
+            $table->string("reported_test");
             $table->boolean("read")->default(false);
             $table->unsignedBigInteger("reporting_user_id");
             $table->unsignedBigInteger("user_id");

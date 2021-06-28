@@ -109,10 +109,16 @@ Route::get('/notWorking', [App\Http\Controllers\TestController::class, 'notWorki
 Route::post("test/warningOrDelete",[App\Http\Controllers\ReportController::class,"warningOrDelete"])
     ->name("warningOrDelete")
     ->middleware("auth");
+Route::get("reportsList",[App\Http\Controllers\ReportController::class,"reportsList"])
+    ->name("reportsList")
+    ->middleware("auth");
 Route::get("reports",[App\Http\Controllers\ReportController::class,"index"])
     ->name("reports")
     ->middleware("auth");
 Route::post("read",[App\Http\Controllers\ReportController::class,"read"])
     ->name("read")
+    ->middleware("auth");
+Route::delete('reportsList/delete/{id}',[App\Http\Controllers\ReportController::class,"destroy"])
+    ->name("reportDelete")
     ->middleware("auth");
 //*** users reports

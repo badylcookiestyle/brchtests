@@ -26,7 +26,7 @@ class reportRequest extends FormRequest
         return [
             "title"=>"required|min:2|max:64",
             "description"=>"required|min:32|max:500",
-            "action"=>"required|in:warningOnly,warningWithDelete",
+            "action"=>"required|in:warningOnly,warningWithDelete,reportOnly",
             "testId"=>"required|numeric|gt:0"
         ];
     }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Test;
+use App\Models\Report;
 
 class Report extends Model
 {
@@ -25,36 +26,62 @@ class Report extends Model
         $userId=$testData->user_id;
         if($request->action=="warningWithDelete"){
         Test::destroy($request->testId);
+        DB::table("reports")->where("reported_test",$request->testId)->where("action","reportOnly")->delete();
         }
+        if(Auth::User()->isAdmin()){
         Report::insert([
             "title"=>$request->title,
             "reason"=>$request->description,
             "action"=>$request->action,
             "reporting_user_id"=>Auth::user()->id,
+            "reported_test"=>$request->testId,
             "user_id"=>$userId
 
         ]);
+        }
+        else{
+            Report::insert([
+                "title"=>$request->title,
+                "reason"=>$request->description,
+                "action"=>"reportOnly",
+                "reporting_user_id"=>Auth::user()->id,
+                "reported_test"=>$request->testId,
+                "user_id"=>$userId]);
+        }
             return response()->json('everythin is workin');
         }
-        return "brch";
     }
     public static function index(){
-        $reports=DB::table("reports")
+        $reportz=DB::table("reports")
             ->join("users","reports.user_id","=","users.id")
             ->where("user_id","=",Auth::id())
+            ->where("action","!=","reportOnly")
             ->select("title","reason","action","name","reports.id","read")
+            ->OrderBy("id",'desc')
             ->get();
-        return view("userPanels.reports",["reports"=>$reports]);
+        return view("userPanels.reports",["reportz"=>$reportz]);
     }
     public static function read($id){
         $CheckIfReportExist=DB::table("reports")
             ->where("id",$id)
             ->where("user_id",Auth::id())
             ->get();
+
         if($CheckIfReportExist!==null){
             DB::table("reports")->where("id",$id)->update(['read'=>true]);
         }
-     //   return $CheckIfReportExist
+    }
+    public static function reportsList(){
+        $reportz=DB::table("reports")
+            ->where("action","=","reportOnly")
+            ->orderBy("id","desc")
+            ->get();
+        return view("adminPanels.reports")->with("reportz",$reportz);
+    }
+    public static function destroy($id){
+        $report = Report::find($id);
+        $report->delete();
+        return response()->json(['success' => 'everythin is ok']);
     }
     public function report()
     {

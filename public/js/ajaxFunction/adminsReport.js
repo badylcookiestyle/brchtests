@@ -28,6 +28,44 @@ $("#AdminWarningButton").click(function(){
         url: "warningOrDelete",
         data: formData,
         dataType: 'json',
-
+        error: function (data) {
+            console.log(data);
+            drawQuestionErrors(data)
+        }
     });
+
 })
+
+$("#reportButton").click(function(){
+    var title=$("#reportTitle").val()
+    var description=$("#reportDescription").val()
+    var action="reportOnly";
+
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var formData = {
+        title: title,
+        description: description,
+        action: action,
+        testId:testId
+    }
+    $.ajax({
+        type: "POST",
+        url: "warningOrDelete",
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+
+        }
+    })
+
+})
+

@@ -4,7 +4,7 @@
     <div class="container">
        <h1>Reports</h1>
         <div class="d-block  p-4 ">
-        @forelse($reports as $report)
+        @forelse($reportz as $report)
             <div id="#r{{$report->id}}" class=" border-top py-2" >
                 <h1 class="text-break">{{$report->title}}</h1>
                 <h3 class="float-right">{{__($report->action)}}</h3>
@@ -13,6 +13,7 @@
                 @else
                     <button class="btn btn-outline-info  " id="reasonButton" data-id="{{$report->id}}">read</button>
                     @endif
+
                     <div class="description" id="d{{$report->id}}">
                     {{$report->reason}}
                 </div>

@@ -46,7 +46,8 @@ class Test extends Model
                 ->select(DB::raw("count(sub_comments.id) as amountOfSubc"))
                 ->groupBy("comment_id")->orderBy("comments.id", "DESC")
                 ->get();
-        }}
+            }
+        }
         $likesComments = DB::select('select comments.id,count(comment_likes.id) as result from comment_likes right join comments ON comment_likes.comment_id=comments.id where test_id=' . $id . ' GROUP BY comments.id  ORDER BY comments.id DESC');
         $likes = json_encode(["likesTest" => $likesTest, "likesComment" => $likesComments]);
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();

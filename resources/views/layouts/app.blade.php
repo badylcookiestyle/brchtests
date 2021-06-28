@@ -67,8 +67,12 @@
                                     <a class="dropdown-item" href="{{route('userStats')}}">
                                         {{__('Stats')}}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('home') }}"
-                                    >
+                                    @if(Auth::user()->isAdmin())
+                                        <a class="dropdown-item" href="{{ route('reportsList') }}">
+                                            {{ __('Reports')." ".$reports }}
+                                        </a>
+                                    @endif
+                                    <a class="dropdown-item" href="{{ route('home') }}">
                                         {{ __('Your Tests') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('settings') }}"
@@ -83,8 +87,6 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -95,7 +97,6 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
