@@ -1,3 +1,6 @@
+
+$("#errorUserModal").hide()
+$("#successUserModal").hide();
 $("#AdminWarningButton").click(function(){
     var title=$("#reportOrWarningTitle").val()
     var description=$("#reportOrWarningDescription").val()
@@ -28,9 +31,18 @@ $("#AdminWarningButton").click(function(){
         url: "warningOrDelete",
         data: formData,
         dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            $("#successAdminModal").show()
+            $("#successAdminModal").text("report has been submitted!")
+            //drawQuestionErrors(data)
+        },
         error: function (data) {
             console.log(data);
-            drawQuestionErrors(data)
+
+            $("#errorAdminModal").show()
+
+            $("#errorAdminModal").text(data.responseJSON.errors.testId)
         }
     });
 
@@ -60,10 +72,15 @@ $("#reportButton").click(function(){
         dataType: 'json',
         success: function (data) {
             console.log(data);
+            $("#successUserModal").show()
+            $("#successUserModal").text("report has been submitted!")
         },
         error: function (data) {
             console.log(data);
 
+            $("#errorUserModal").show()
+
+            $("#errorUserModal").text(data.responseJSON.errors.testId)
         }
     })
 

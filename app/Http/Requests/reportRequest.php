@@ -3,7 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Rules\IfTestHasBeenReportedRule;
+use App\Rules\IfItsYourTest;
 class reportRequest extends FormRequest
 {
     /**
@@ -25,9 +26,9 @@ class reportRequest extends FormRequest
     {
         return [
             "title"=>"required|min:2|max:64",
-            "description"=>"required|min:32|max:500",
+            "description"=>"required|min:32|max:250",
             "action"=>"required|in:warningOnly,warningWithDelete,reportOnly",
-            "testId"=>"required|numeric|gt:0"
+            "testId"=>["required","numeric","gt:0",new IfItsYourTest($this->input("testId")),new IfTestHasBeenReportedRule($this->input("testId"))]
         ];
     }
 }

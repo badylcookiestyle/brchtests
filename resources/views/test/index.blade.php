@@ -29,6 +29,12 @@
 
                 </div>
                 <div class="modal-body">
+                    <ul>
+                        <li class="list-group-item list-group-item-action list-group-item-success"
+                            id="successAdminModal"></li>
+                        <li class="list-group-item list-group-item-action list-group-item-danger"
+                            id="errorAdminModal"></li>
+                    </ul>
                     <div class="form-group ">
                         <label for="reportOrWarningTitle">test_title</label>
                         <input type="text" class="form-control" id="reportOrWarningTitle" name="reportOrWarningTitle" placeholder="Enter a report">
@@ -54,6 +60,12 @@
                 <h1>So u can report this user</h1>
                 </div>
                 <div class="modal-body">
+                    <ul>
+                        <li class="list-group-item list-group-item-action list-group-item-success"
+                            id="successUserModal"></li>
+                        <li class="list-group-item list-group-item-action list-group-item-danger"
+                            id="errorUserModal"></li>
+                    </ul>
                     <div class="form-group ">
                         <label for="reportTitle">test_title</label>
                         <input type="text" class="form-control" id="reportTitle" name="reportTitle" placeholder="Enter a report">

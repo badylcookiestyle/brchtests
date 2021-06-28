@@ -26,6 +26,7 @@ class createTestRequest extends FormRequest
         return [
             "testTitle"=>"required|min:2|max:64",
             "descriptionTest"=>"required|min:32|max:500",
+            "category"=>"required|in:fitness,video games,anime,science,cooking,history,other",
             "image"=>"sometimes|image|mimes:jpg,png,jpeg|max:4048|dimensions:max_width=100,max_height=200|dimensions:ratio=3/2"
 
         ];

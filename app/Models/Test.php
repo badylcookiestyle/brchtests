@@ -99,6 +99,7 @@ class Test extends Model
         $test->name = $request->testTitle;
         $test->description = $request->descriptionTest;
         $test->amount_of_solutions = 0;
+        $test->category=$request->category;
         $test->user_id = Auth::id();
         $test->save();
         return redirect()->route("questionIndex", ["id" => $test->id, "img" => $test->file_path]);

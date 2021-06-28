@@ -17,6 +17,7 @@ class CreateTestsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->string("category");
             $table->float('max_score');
             $table->longText('description');
             $table->longText('file_path')->nullable();
