@@ -5,7 +5,7 @@
         <form action="{{route('testCreate')}}" method="GET">
             @csrf
             @method("GET")
-            <button class="btn btn-info float-right">{{__('add_new_test')}}</button>
+            <button class="btn btn-info float-right">{{__('create new test')}}</button>
         </form>
 		<h1>List of your tests</h1>
 		@forelse($tests as $test)

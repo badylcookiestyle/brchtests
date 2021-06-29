@@ -7,8 +7,8 @@
         @if($amountOfCompleted!=0)
         <h3>Average score : {{$averageScore}}</h3>
         <h3>Amount of completed tests : {{$amountOfCompleted}}</h3>
-            <h3>Sum of correct answers : {{$sumOfCorrect}}</h3>
-            <h3>Sum of incorrect answers : {{$sumOfIncorrect}}</h3>
+            <h3 class="text-success">Sum of correct answers : {{$sumOfCorrect}}</h3>
+            <h3 class="text-danger">Sum of incorrect answers : {{$sumOfIncorrect}}</h3>
         @else
             <h2>You haven't solved any test yet</h2>
         @endif

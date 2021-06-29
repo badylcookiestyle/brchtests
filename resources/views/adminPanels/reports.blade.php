@@ -26,7 +26,6 @@
         </div>
     </div>
     </body>
-
     <script src="{{ asset('js/selectReport.js') }}"></script>
     <script src="{{ asset('js/ajaxFunction/destroyReport.js')}}"></script>
 

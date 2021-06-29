@@ -36,9 +36,12 @@ class Test extends Model
             $userId = Auth::user()->id;
         }
         $questions = Question::where("test_id", "=", $id)->get();
-        $testData = Test::where("id", "=", $id)->select("description", "file_path", "name", "user_id")->first();
+        $testData = Test::where("id", "=", $id)
+            ->select("description", "file_path", "name", "user_id","category")
+            ->first();
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
+        $isItYours=Test::where("id",$id)->where("user_id",Auth::user()->id)->first();
         if(isset($comments[0])){
         if ($comments[0]->id !== 0) {
             $hasSubComments = SubComment::rightJoin("comments", "sub_comments.comment_id", "=", "comments.id")
@@ -53,14 +56,14 @@ class Test extends Model
         $isLiked = DB::table("test_likes")->where("test_id", "=", $id)->where("user_id", "=", $userId)->count();
         if (count($questions) > 0) {
             if ($userId == $testData->user_id) {
-                //brch I should optymalize this
                 return view("test.index", ['testData' => $testData,
                     'questions' => $questions,
                     'comments' => $comments,
                     "canEdit" => true,
                     "likes" => $likes,
                     "isLiked" => $isLiked,
-                    "ifSubComments" => $hasSubComments
+                    "ifSubComments" => $hasSubComments,
+                    "isItYours"=> $isItYours
                 ]);
             } else {
                 return view("test.index", ['testData' => $testData,
@@ -69,7 +72,8 @@ class Test extends Model
                     "canEdit" => false,
                     "likes" => $likes,
                     "isLiked" => $isLiked,
-                    "ifSubComments" => $hasSubComments
+                    "ifSubComments" => $hasSubComments,
+                    "isItYours"=> $isItYours
                 ]);
             }
         } else {

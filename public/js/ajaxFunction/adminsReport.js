@@ -32,16 +32,11 @@ $("#AdminWarningButton").click(function(){
         data: formData,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $("#successAdminModal").show()
             $("#successAdminModal").text("report has been submitted!")
-            //drawQuestionErrors(data)
         },
         error: function (data) {
-            console.log(data);
-
             $("#errorAdminModal").show()
-
             $("#errorAdminModal").text(data.responseJSON.errors.testId)
         }
     });
@@ -49,11 +44,11 @@ $("#AdminWarningButton").click(function(){
 })
 
 $("#reportButton").click(function(){
-    var title=$("#reportTitle").val()
+    var title=$( "#reportTitle option:selected" ).val()
     var description=$("#reportDescription").val()
     var action="reportOnly";
-
-
+    $("#errorUserModal").hide()
+    $("#successUserModal").hide()
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -77,9 +72,7 @@ $("#reportButton").click(function(){
         },
         error: function (data) {
             console.log(data);
-
             $("#errorUserModal").show()
-
             $("#errorUserModal").text(data.responseJSON.errors.testId)
         }
     })

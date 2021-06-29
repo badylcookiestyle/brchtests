@@ -118,7 +118,10 @@ Route::get("reports",[App\Http\Controllers\ReportController::class,"index"])
 Route::post("read",[App\Http\Controllers\ReportController::class,"read"])
     ->name("read")
     ->middleware("auth");
-Route::delete('reportsList/delete/{id}',[App\Http\Controllers\ReportController::class,"destroy"])
+Route::delete("reportsList/delete/{id}",[App\Http\Controllers\ReportController::class,"destroy"])
     ->name("reportDelete")
     ->middleware("auth");
-//*** users reports
+//*** filters
+Route::post("categoryFilter",[App\Http\Controllers\CategoryController::class,"categoryFilter"])
+    ->name("categoryFilter")
+    ->middleware("auth");

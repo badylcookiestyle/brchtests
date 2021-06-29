@@ -1,6 +1,5 @@
 $(".description").hide()
 $( document ).ready(function() {
-    console.log("loaded")
     $("body").on("click", "#reasonButton", function (e) {
         var id = $(this).data("id");
         $(this).removeClass("btn-outline-info")
