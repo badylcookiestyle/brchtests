@@ -41,7 +41,7 @@ class Test extends Model
             ->first();
         $comments = Comment::where("test_id", '=', $id)->orderBy("created_at", "desc")->get();
         $likesTest = DB::table("test_likes")->where("test_id", "=", $id)->count();
-        $isItYours=Test::where("id",$id)->where("user_id",Auth::user()->id)->first();
+        $isItYours=Test::where("id",$id)->where("user_id",$userId)->first();
         if(isset($comments[0])){
         if ($comments[0]->id !== 0) {
             $hasSubComments = SubComment::rightJoin("comments", "sub_comments.comment_id", "=", "comments.id")
