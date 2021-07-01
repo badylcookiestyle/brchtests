@@ -91,7 +91,15 @@ class TestController extends Controller
         return Test::changeImg($request);
     }
 
-
+    public function search(Request $request){
+        $validated = $request->validate([
+            'text' => 'required|max:64',
+        ]);
+        if($validated){
+        $selectedTests=Test::where("name","like",$request->text.'%')->select("name","id","file_path")->get();
+        return response()->json(['success' => 'Contact form submitted successfully','selectedTests'=>$selectedTests]);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

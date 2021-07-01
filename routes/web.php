@@ -125,3 +125,5 @@ Route::delete("reportsList/delete/{id}",[App\Http\Controllers\ReportController::
 Route::post("categoryFilter",[App\Http\Controllers\CategoryController::class,"categoryFilter"])
     ->name("categoryFilter")
     ->middleware("auth");
+//*** searcher
+Route::post("search",[App\Http\Controllers\TestController::class,"search"]);
