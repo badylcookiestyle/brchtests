@@ -1,17 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-center">{{__('contact')}}</h1>
-    <section class='container mt-5'>
-        <div class='contact' style='float:left;'>
-            <img src="{{asset('logo.jpg')}}" class='logo'>
-        </div>
-        <div class='data ml-5' style='float:left;margin-top:3em;'>
-            <h1>Mateusz Morawski</h1>
-            <br>
-            <h2>badylcookiestyle@gmail.com</h2>
-            <br>
-            <h2>{{__("phone number")}} 000 000 000</h2>
-        </div>
-    </section>
+    
+    <div class="container text-center">
+            <div class="row">
+             
+                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+           
+                      
+                           
+                        <input type="image" class="img-fluid mb-5" style="max-height: 500px;  position: relative;"
+                 src="{{asset('logo.jpg')}}" alt="There is no img">
+                       
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0 text-justify">
+                        <h1 class="mb-4">{{__('contact')}}</h1>
+                        <h3>mail : somethin@gmail.com</h3>
+                        <h3>phone number : 000 000 000</h3>
+                        <h3>linkedin : </h3>
+                    </div>
+               
+            </div>
+    </div>
+     
 @endsection

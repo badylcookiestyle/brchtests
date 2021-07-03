@@ -24,7 +24,8 @@ class categoryRequest extends FormRequest
     public function rules()
     {
         return [
-            "category"=>"required|in:fitness,video games,anime,science,cooking,history,other"
+            "category"=>"required|in:fitness,video games,anime,science,cooking,history,other",
+            "text"=>"sometimes|max:64"
         ];
     }
 }

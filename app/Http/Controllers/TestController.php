@@ -97,7 +97,7 @@ class TestController extends Controller
         ]);
         if($validated){
         $selectedTests=Test::where("name","like",$request->text.'%')->select("name","id","file_path")->get();
-        return response()->json(['success' => 'Contact form submitted successfully','selectedTests'=>$selectedTests]);
+        return response()->json(['success' => 'working','selectedTests'=>$selectedTests]);
         }
     }
     /**

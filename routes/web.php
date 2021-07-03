@@ -123,7 +123,6 @@ Route::delete("reportsList/delete/{id}",[App\Http\Controllers\ReportController::
     ->middleware("auth");
 //*** filters
 Route::post("categoryFilter",[App\Http\Controllers\CategoryController::class,"categoryFilter"])
-    ->name("categoryFilter")
-    ->middleware("auth");
+    ->name("categoryFilter");
 //*** searcher
 Route::post("search",[App\Http\Controllers\TestController::class,"search"]);

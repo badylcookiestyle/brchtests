@@ -2,8 +2,7 @@
 
 @section('content')
     <body>
-    <div class="container text-center">
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-light bg-light mx-5">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Filters</span>
                 <select class="form-select form-select-lg" id="category" name="category" aria-label=".form-select-lg example">
@@ -18,6 +17,8 @@
                 </select>
             </div>
         </nav>
+    <div class="container text-center">
+       
             <div class="row">
                 @for($i=0;$i<count($tests);$i++)
                     <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
