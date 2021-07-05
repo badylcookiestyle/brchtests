@@ -1,4 +1,4 @@
-$("#searchSubmit").click(function(){
+ $("#searchSubmit").click(function(){
     $('#category option').each(function () {
         if (this.defaultSelected) {
             this.selected = true;
@@ -33,7 +33,7 @@ $("#searchSubmit").click(function(){
                      var arrayOfTests=data.selectedTests
                      
                     $("main").empty()
-                    $("main").append("<div id='searchResultArea' class='container text-center'></div>")
+                    $("main").append("<div class='container text-center'><div id='searchResultArea' class=' row'></div></div>")
                     $("main").prepend(` <nav class="navbar navbar-light bg-light mx-5">
                      <div class="container-fluid">
                          <span class="navbar-brand mb-0 h1">Filters</span>
@@ -47,6 +47,7 @@ $("#searchSubmit").click(function(){
                              <option value="history">history</option>
                              <option value="other">other</option>
                          </select>
+                         <button class="btn btn-dark" id="filter-button">filter</button>
                      </div>
                  </nav>`)
                     if(arrayOfTests!=0){

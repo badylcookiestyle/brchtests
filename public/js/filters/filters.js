@@ -1,7 +1,12 @@
-function categoryAjax(category){
+
+function filtersAjax(category){
     var text=$("#search").val()
+    
     var category=$( "#category option:selected" ).val()
-    console.log("b"+text)
+    var sort_category=$( "#sort option:selected" ).val()
+    var sort_order=$( "#sort option:selected" ).attr("data-order")
+     
+    console.log("bump"+text+"category"+category)
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -9,7 +14,9 @@ function categoryAjax(category){
     });
     var formData = {
         category:category,
-        text:text
+        text:text,
+        sort_category:sort_category,
+        sort_order:sort_order,
     }
     $.ajax({
         type: "POST",
@@ -17,16 +24,16 @@ function categoryAjax(category){
         data: formData,
         dataType: 'json',
         success: function (data) {
-            console.log(text)
             console.log(data)
-            console.log("c"+category)
-            $(".row").empty()
+     
+            $("#searchResultArea").empty()
          
-            $(".row").append("<h3 class='text-danger'>Sorry but there are no tests in this category</h3>")
+            $("#searchResultArea").append("<h3 class='text-danger'>Sorry but there are no tests in this category</h3>")
             if(data[0]!="undefined"){
+                $("#searchResultArea").empty()
                 for(i=0;i<data.length;i++){
-                    $(".row").empty()
-                    $(".row").append("<div class='col-lg-4 col-md-12 mb-4 mb-lg-0'><h1>"+data[i].name+"</h1><form action='test/"+data[i].id+"'><input type='image' class='img-fluid mb-5' style='max-height: 500px;position:relative;'src='http://localhost:8000/storage/images/"+data[i].file_path+"'></form></div>")
+                 
+                    $("#searchResultArea").append("<div class='col-lg-4 col-md-12 mb-4 mb-lg-0'><h1>"+data[i].name+"</h1><form action='test/"+data[i].id+"'><input type='image' class='img-fluid mb-5' style='max-height: 500px;position:relative;'src='http://localhost:8000/storage/images/"+data[i].file_path+"'></form></div>")
                 }}
         },
         error: function (data)
@@ -35,6 +42,7 @@ function categoryAjax(category){
                 },
     })
 }
-    $("body").on('change','#category',function () {
-    categoryAjax(category)
+    $("body").on('click','#filter-button',function () {
+    filtersAjax(category)
 });
+

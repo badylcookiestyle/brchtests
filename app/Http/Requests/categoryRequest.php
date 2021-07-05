@@ -24,8 +24,10 @@ class categoryRequest extends FormRequest
     public function rules()
     {
         return [
-            "category"=>"required|in:fitness,video games,anime,science,cooking,history,other",
-            "text"=>"sometimes|max:64"
+            "category"=>"required|in:Select category,fitness,video games,anime,science,cooking,history,other",
+            "text"=>"sometimes|max:64",
+            "sort_category"=>"sometimes|in:average_score,created_at,amount_of_solutions,Sort",
+            "sort_order"=>"required_with:sort_category|in:ASC,DESC"
         ];
     }
 }
